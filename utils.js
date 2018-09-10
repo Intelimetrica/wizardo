@@ -116,3 +116,13 @@ module.exports = {
   view_already_exists: view_already_exists
 };
 
+
+/* *
+ * Useful links
+ *
+ * https://medium.com/zenkit/a-beginners-guide-to-getting-things-done-3cc1a5123b98
+ * https://developer.atlassian.com/blog/2015/11/scripting-with-node/
+ * https://docs.npmjs.com/cli/link
+ * https://nodejs.org/api/fs.html#fs_class_fs_stats
+ *
+ * */
