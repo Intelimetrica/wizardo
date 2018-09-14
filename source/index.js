@@ -36,16 +36,29 @@ program
     }
   });
 
+/**
+ * create
+ *
+ * Verify the uniqueness of the generator name
+ * Add .wizardo/<generator>.config.json
+ *
+ * @param {string} generator - Name of generator. It should be in snake_case
+ */
 program
   .command('create <generator>')
   .description('create a new generator into .wizardo/<generator>.config.json')
   .action(generator => {
     log.command(`create`);
     console.log(yellow(`New generator \`${generator}\` created`));
-    // Verify the uniqueness of the generator name
-    // Add .wizardo/<generator>.config.json
   });
 
+/**
+ * run
+ *
+ * Run pipeline described in pipeline
+ *
+ * @param {string} generator - Name of generator. It should be in snake_case
+ */
 program
   .command('run <generator>')
   .description('run generator given .wizardo/<generator>.config.json')
@@ -55,6 +68,12 @@ program
 
   });
 
+/**
+ * list
+ *
+ * Extract generators from .wizardo/<generator>.config.json's and list them bonito
+ *
+ */
 program
   .command('list')
   .alias('ls')
