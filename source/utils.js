@@ -1,17 +1,6 @@
-var colors = require('colors/safe');
+import { magenta, yellow, green, red} from 'chalk';
+import { version as v} from '../package.json';
 let fs     = require('fs');
-
-const print_create_path = (path) => {
-  console.log(colors.green('  create'), path);
-};
-
-const print_modify = (file) => {
-  console.log(colors.magenta('  modify  '), file);
-};
-
-const print_create_file = (file) => {
-  console.log(colors.yellow('  create  '), file);
-};
 
 const cp = (src, target, callback) => {
   fs.readFile(src, 'utf8', function (err,data) {
@@ -23,8 +12,8 @@ const cp = (src, target, callback) => {
             if (err) return console.log(err);
           });
 
-      if (src === target) print_modify(target);
-      else print_create_file(target);
+      if (src === target) log.modify(target);
+      else log.file(target);
     });
 }
 
@@ -97,10 +86,18 @@ const { join } = require('path');
 const getFolders = (path=".") =>
   readdirSync(path).filter(f => statSync(join(path, f)).isDirectory());
 
+const wizardoFolderExists = () => getFolders().includes(".wizardo");
+
 const getFiles = (path_to_folder=".") =>
   readdirSync(path_to_folder)
     .filter(f => statSync(join(path_to_folder, f)).isFile());
 
+const log = {
+  folder: (path) => console.log(yellow(`  create: ${path}`)),
+  modify: (file) => console.log(magenta(`  modify: ${file}`)),
+  file: (file) => console.log(green(`  create: ${file}`)),
+  command: (cmd) => console.log(magenta(`Wizardo ${v}: ${cmd}`))
+};
 
 module.exports = {
   cp: cp,
@@ -108,12 +105,12 @@ module.exports = {
   get_existing_views: get_existing_views,
   insert_code: insert_code,
   isFile: isFile,
-  print_create_file: print_create_file,
-  print_create_path: print_create_path,
+  log: log,
   rplc_mod: rplc_mod,
   rplc_view: rplc_view,
   verify_module_exists: verify_module_exists,
-  view_already_exists: view_already_exists
+  view_already_exists: view_already_exists,
+  wizardoFolderExists: wizardoFolderExists,
 };
 
 

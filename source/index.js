@@ -3,28 +3,44 @@
 import program from 'commander';
 import prompt  from 'co-prompt';
 import { magenta, yellow, green, red} from 'chalk';
+import { wizardoFolderExists, log } from './utils';
+import {mkdirSync} from 'fs.extra';
 
 import { version as v} from '../package.json';
 
 program
   .version(v, '-v, --version')
 
+/**
+ * init
+ *
+ * Verify that .wizardo doesn't exist
+ * Create .wizardo folder
+ * Create .wizardo/templates folder
+ *
+ */
 program
   .command('init')
   .description('create the initial boilerplate for wizardo generator')
   .action(() => {
-    console.log(magenta(`Wizardo ${v}: init`));
-    console.log('setup');
-    // verify that .wizardo doesn't exist
-    // Create .wizardo folder
-    // Create .wizardo/templates folder
+
+    log.command(`init`);
+    if (wizardoFolderExists()) {
+      console.log(' - A Wizardo project already exists in this folder');
+    } else {
+      [ './.wizardo', './.wizardo/templates' ]
+        .forEach(e => {
+          mkdirSync(e);
+          log.folder(e)
+        });
+    }
   });
 
 program
   .command('create <generator>')
   .description('create a new generator into .wizardo/<generator>.config.json')
   .action(generator => {
-    console.log(magenta(`Wizardo ${v}: create`));
+    log.command(`create`);
     console.log(yellow(`New generator \`${generator}\` created`));
     // Verify the uniqueness of the generator name
     // Add .wizardo/<generator>.config.json
@@ -34,7 +50,7 @@ program
   .command('run <generator>')
   .description('run generator given .wizardo/<generator>.config.json')
   .action(generator => {
-    console.log(magenta(`Wizardo ${v}: run`));
+    log.command(`run`);
     console.log(green(`Run pipeline.js rules with \`${generator}\` rules `));
 
   });
@@ -44,7 +60,7 @@ program
   .alias('ls')
   .description('list all available generators')
   .action(() => {
-    console.log(magenta(`Wizardo ${v}: list`));
+    log.command(`list`);
     // Extract generators from .wizardo/<generator>.config.json's and list them bonito
   })
 
