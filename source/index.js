@@ -3,7 +3,7 @@
 import program from 'commander';
 import prompt  from 'co-prompt';
 import { magenta, yellow, green, red} from 'chalk';
-import { wizardoFolderExists, log } from './utils';
+import { wizardoFolderExists, log, getGenerators } from './utils';
 import {mkdirSync} from 'fs.extra';
 
 import { version as v} from '../package.json';
@@ -23,8 +23,7 @@ program
   .command('init')
   .description('create the initial boilerplate for wizardo generator')
   .action(() => {
-
-    log.command(`init`);
+    log.command('init');
     if (wizardoFolderExists()) {
       console.log(' - A Wizardo project already exists in this folder');
     } else {
@@ -48,8 +47,16 @@ program
   .command('create <generator>')
   .description('create a new generator into .wizardo/<generator>.config.json')
   .action(generator => {
-    log.command(`create`);
-    console.log(yellow(`New generator \`${generator}\` created`));
+    log.command('create');
+
+    let generators = getGenerators();
+    if (generators.includes(generator)) {
+      log.danger('Generator name already taken. Existing generators are:');
+      log.msg(generators.reduce((acc, f) => `${acc}   + ${f}\n`, ''));
+    } else {
+      console.log(yellow(`New generator \`${generator}\` created`));
+      let dir = h.rplc_mod(mod_name, dirs[i]);
+    }
   });
 
 /**
@@ -63,7 +70,7 @@ program
   .command('run <generator>')
   .description('run generator given .wizardo/<generator>.config.json')
   .action(generator => {
-    log.command(`run`);
+    log.command('run');
     console.log(green(`Run pipeline.js rules with \`${generator}\` rules `));
 
   });
@@ -79,7 +86,7 @@ program
   .alias('ls')
   .description('list all available generators')
   .action(() => {
-    log.command(`list`);
+    log.command('list');
     // Extract generators from .wizardo/<generator>.config.json's and list them bonito
   })
 

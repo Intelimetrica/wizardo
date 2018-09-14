@@ -1,0 +1,10 @@
+{
+  "generator": "generator",
+  "templates": [
+    {
+      "config": "___generator___.config.json",
+      "destination": "___destination___"
+    }
+  ],
+  "modify": []
+}

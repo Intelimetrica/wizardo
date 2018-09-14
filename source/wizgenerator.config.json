@@ -1,0 +1,7 @@
+{
+  "generator": "generator",
+  "templates": [
+    { "config": "___generator___.config.json" }
+  ],
+  "modify": []
+}

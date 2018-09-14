@@ -88,19 +88,29 @@ const getFolders = (path=".") =>
 
 const wizardoFolderExists = () => getFolders().includes(".wizardo");
 
-const getFiles = (path_to_folder=".") =>
-  readdirSync(path_to_folder)
+const getFiles = (path_to_folder=".") => {
+  return readdirSync(path_to_folder)
     .filter(f => statSync(join(path_to_folder, f)).isFile());
+};
+
+const getGenerators = () => {
+  return getFiles(".wizardo/")
+    .filter(f => f.endsWith('config.json'))
+    .map(f => f.replace('.config.json', ''));
+};
 
 const log = {
   folder: (path) => console.log(yellow(`  create: ${path}`)),
   modify: (file) => console.log(magenta(`  modify: ${file}`)),
   file: (file) => console.log(green(`  create: ${file}`)),
-  command: (cmd) => console.log(magenta(`Wizardo ${v}: ${cmd}`))
+  command: (cmd) => console.log(magenta(`Wizardo ${v}: ${cmd}`)),
+  danger: (msg) => console.log(red(` - ${msg}`)),
+  msg: console.log
 };
 
 module.exports = {
   cp: cp,
+  getGenerators: getGenerators,
   get_existing_modules: get_existing_modules,
   get_existing_views: get_existing_views,
   insert_code: insert_code,
@@ -110,7 +120,7 @@ module.exports = {
   rplc_view: rplc_view,
   verify_module_exists: verify_module_exists,
   view_already_exists: view_already_exists,
-  wizardoFolderExists: wizardoFolderExists,
+  wizardoFolderExists: wizardoFolderExists
 };
 
 
