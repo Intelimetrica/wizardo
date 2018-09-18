@@ -4,44 +4,47 @@ let fs     = require('fs');
 
 const cp = (src, target, callback) => {
   fs.readFile(src, 'utf8', function (err,data) {
-      if (err) return console.log(err);
+    if (err) return console.log(err);
 
-      let result = callback(data);
+    let result = callback(data);
 
-      fs.writeFile(target, result, 'utf8', function (err) {
-            if (err) return console.log(err);
-          });
-
-      if (src === target) log.modify(target);
-      else log.file(target);
+    fs.writeFile(target, result, 'utf8', function (err) {
+      if (err) {
+        console.log('que fue compa', target, result);
+        return console.log(err);
+      }
     });
+
+    if (src === target) log.modify(target);
+    else log.file(target);
+  });
 }
 
 const rplc_mod = (name, placeholder) => {
   let ans = placeholder;
   if (ans.indexOf("<%=module_name%>") !== -1) {
-      ans = ans.replace(/<%=module_name%>/gi, name);
-    }
-    if (ans.indexOf("__module_name__") !== -1) {
-          ans = ans.replace(/__module_name__/gi, name);
-        }
-    if (ans.indexOf("__ModuleName__") !== -1) {
-          let classed = name.split("_").map(el => el.charAt(0).toUpperCase() + el.slice(1)).join("");
-          ans = ans.replace(/__ModuleName__/gi, classed);
-        }
-    return ans;
+    ans = ans.replace(/<%=module_name%>/gi, name);
+  }
+  if (ans.indexOf("__module_name__") !== -1) {
+    ans = ans.replace(/__module_name__/gi, name);
+  }
+  if (ans.indexOf("__ModuleName__") !== -1) {
+    let classed = name.split("_").map(el => el.charAt(0).toUpperCase() + el.slice(1)).join("");
+    ans = ans.replace(/__ModuleName__/gi, classed);
+  }
+  return ans;
 };
 
 const rplc_view = (name, placeholder) => {
   let ans = placeholder;
   if (ans.indexOf("__view_name__") !== -1) {
-      ans = ans.replace(/__view_name__/gi, name);
-    }
-    if (ans.indexOf("__ViewName__") !== -1) {
-          let classed = name.split("_").map(el => el.charAt(0).toUpperCase() + el.slice(1)).join("");
-          ans = ans.replace(/__ViewName__/gi, classed);
-        }
-    return ans;
+    ans = ans.replace(/__view_name__/gi, name);
+  }
+  if (ans.indexOf("__ViewName__") !== -1) {
+    let classed = name.split("_").map(el => el.charAt(0).toUpperCase() + el.slice(1)).join("");
+    ans = ans.replace(/__ViewName__/gi, classed);
+  }
+  return ans;
 };
 
 const insert_code = (complete_text, text_to_insert, insert_after) => {
@@ -99,6 +102,30 @@ const getGenerators = () => {
     .map(f => f.replace('.config.json', ''));
 };
 
+const replaceVariables = (text, variables) => {
+  let ans = text;
+  const var_keys = Object.keys(variables);
+
+  if (var_keys.length > 0) {
+    var_keys.forEach(key => {
+      let value = variables[key];
+      if (ans.includes(`<%=${key}=%>`)) {
+        ans = ans.replace(RegExp(`<%=${key}=%>`,'gi'), value);
+      }
+      if (ans.includes(`___${key}___`)) {
+        ans = ans.replace(RegExp(`___${key}___`,'gi'), value);
+      }
+      // TODO Handle PascalCase - Use botas
+      if (ans.indexOf("__ModuleName__") !== -1) {
+        let classed = value.split("_").map(el => el.charAt(0).toUpperCase() + el.slice(1)).join("");
+        ans = ans.replace(/__ModuleName__/gi, classed);
+      }
+    });
+  }
+
+  return ans;
+};
+
 const log = {
   folder: (path) => console.log(yellow(`  create: ${path}`)),
   modify: (file) => console.log(magenta(`  modify: ${file}`)),
@@ -118,6 +145,7 @@ module.exports = {
   insert_code: insert_code,
   isFile: isFile,
   log: log,
+  replaceVariables: replaceVariables,
   rplc_mod: rplc_mod,
   rplc_view: rplc_view,
   verify_module_exists: verify_module_exists,

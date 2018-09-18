@@ -2,8 +2,8 @@
   "generator": "<%=generator=%>",
   "templates": [
     {
-      "config": "<%=generator=%>.sample",
-      "destination": "."
+      "source_template": "<%=source_template=%>.sample",
+      "destination": "path/to/<%=destination=%>"
     }
   ],
   "modify": []

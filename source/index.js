@@ -3,12 +3,19 @@
 import program from 'commander';
 import prompt  from 'co-prompt';
 import { magenta, yellow, green, red} from 'chalk';
-import { wizardoFolderExists, log, getGenerators } from './utils';
-import {mkdirSync} from 'fs.extra';
+import {
+  cp,
+  getGenerators,
+  log,
+  replaceVariables,
+  wizardoFolderExists,
+} from './utils';
+import { mkdirSync, statSync } from 'fs.extra';
+import { join } from 'path';
 
 import { version as v} from '../package.json';
-import { stage5 } from './pipeline';
-import config from './wizgenerator.config.json';
+import { templates } from './wizgenerator.config.json';
+
 
 program
   .version(v, '-v, --version')
@@ -49,9 +56,14 @@ program
   .command('create <generator>')
   .description('create a new generator into .wizardo/<generator>.config.json')
   .action(generator => {
-    log.command('create');
+    log.command(`create ${generator}`);
 
-    // TODO: verify that init has being set first
+    // TODO: Verify that generator is snake_case
+    if (!wizardoFolderExists()) {
+      log.danger('A Wizardo project was not found in the current directory');
+      log.msg('   + Run `wizardo init` to create a wizardo project');
+      process.exit(1);
+    }
 
     let generators = getGenerators();
     if (generators.includes(generator)) {
@@ -60,15 +72,41 @@ program
     } else {
       //run wizgenerator.config.json
       console.log(yellow(`New generator \`${generator}\` created`));
-      /* exect only stage 5
-       * stage 5 - Copy templates & Replace variables in created templates
-       * Note: stage 4 is not needed since it was handled at the beginning
-       * of the script
-       **/
-      let response = stage5('wizgenerator', {generator: generator});
-      console.log(response);
+
+      // generate folders
+      for (let gen of templates) {
+        try {
+          /**
+           * Do nothing.
+           * .wizardo directory already exists and is handled by init
+           **/
+        }
+        catch (err) {
+          mkdirSync(gen.destination);
+          log.folder(gen.destination);
+          continue;
+        }
+      }
+
+      // Create files from templates
+      for (let gen of templates) {
+        cp(join(__dirname, "/templates/" + gen.source_template),
+          replaceVariables(join(gen.destination, gen.source_template), {generator: generator}),
+          data => replaceVariables(data, {generator: generator, source_template: 'templado'})
+        );
+      }
     }
   });
+
+program
+  .command('test')
+  .action(generator => {
+    log.command('test');
+    for (let gen of templates) {
+      console.log(replaceVariables(join(gen.destination, gen.source_template), {generator: generator}));
+    }
+  });
+
 
 /**
  * run
@@ -98,8 +136,8 @@ program
   .description('list all available generators')
   .action(() => {
     log.command('list');
-    // Extract generators from .wizardo/<generator>.config.json's and list them bonito
-  })
+    log.msg(getGenerators().reduce((acc, f) => `${acc}   - ${f}\n`, ''));
+  });
 
 
 program

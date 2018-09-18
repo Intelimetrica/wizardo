@@ -3,7 +3,7 @@
   "templates": [
     {
       "source_template": "___generator___.config.json",
-      "destination": "./wizardo/"
+      "destination": ".wizardo"
     }
   ],
   "modify": []

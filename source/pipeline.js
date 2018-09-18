@@ -21,6 +21,7 @@
 
 import { getFolders, getFiles } from './utils';
 
+
 const wizardoFolderExists = () => getFolders().includes(".wizardo");
 console.log('wizardo exists', wizardoFolderExists());
 
@@ -96,10 +97,6 @@ console.log('config file exists', configFileExists());
 
 import config from './wizgenerator.config.json';
 const stage5 = (generator_name, vars) => {
-  console.log('stage5', generator_name, vars);
-
-      console.log('templates', config.templates);
-
   const create_view = (mod_name, view_name) => {
 
     // get destinations
@@ -120,7 +117,7 @@ const stage5 = (generator_name, vars) => {
         });
       } else {
         try {
-          fs.mkdirpSync(dir)
+          fs.mkdirSync(dir)
           h.print_create_path(dir);
         } catch(e) {
           throw e;
