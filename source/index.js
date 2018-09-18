@@ -7,6 +7,8 @@ import { wizardoFolderExists, log, getGenerators } from './utils';
 import {mkdirSync} from 'fs.extra';
 
 import { version as v} from '../package.json';
+import { stage5 } from './pipeline';
+import config from './wizgenerator.config.json';
 
 program
   .version(v, '-v, --version')
@@ -49,13 +51,22 @@ program
   .action(generator => {
     log.command('create');
 
+    // TODO: verify that init has being set first
+
     let generators = getGenerators();
     if (generators.includes(generator)) {
       log.danger('Generator name already taken. Existing generators are:');
       log.msg(generators.reduce((acc, f) => `${acc}   + ${f}\n`, ''));
     } else {
+      //run wizgenerator.config.json
       console.log(yellow(`New generator \`${generator}\` created`));
-      let dir = h.rplc_mod(mod_name, dirs[i]);
+      /* exect only stage 5
+       * stage 5 - Copy templates & Replace variables in created templates
+       * Note: stage 4 is not needed since it was handled at the beginning
+       * of the script
+       **/
+      let response = stage5('wizgenerator', {generator: generator});
+      console.log(response);
     }
   });
 

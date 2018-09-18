@@ -1,0 +1,10 @@
+{
+  "generator": "<%=generator=%>",
+  "templates": [
+    {
+      "config": "<%=generator=%>.sample",
+      "destination": "."
+    }
+  ],
+  "modify": []
+}

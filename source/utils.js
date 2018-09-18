@@ -113,6 +113,8 @@ module.exports = {
   getGenerators: getGenerators,
   get_existing_modules: get_existing_modules,
   get_existing_views: get_existing_views,
+  getFiles: getFiles,
+  getFolders: getFolders,
   insert_code: insert_code,
   isFile: isFile,
   log: log,

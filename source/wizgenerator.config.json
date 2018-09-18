@@ -1,7 +1,10 @@
 {
-  "generator": "generator",
+  "generator": "wizgenerator",
   "templates": [
-    { "config": "___generator___.config.json" }
+    {
+      "source_template": "___generator___.config.json",
+      "destination": "./wizardo/"
+    }
   ],
   "modify": []
 }

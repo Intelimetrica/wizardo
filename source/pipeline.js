@@ -1,3 +1,11 @@
+/* stage 1 - Check if config file exists
+ * stage 2 - Check that git is empty
+ * stage 3 - Prompt for variables
+ * stage 4 - Generate needed folders
+ * stage 5 - Copy templates & Replace variables in created templates
+ * stage 6 - Modify existing files
+ **/
+
 /* PIPELINE - stage 1
  * Ask for config file
  *
@@ -11,12 +19,14 @@
  *
  **/
 
+import { getFolders, getFiles } from './utils';
+
 const wizardoFolderExists = () => getFolders().includes(".wizardo");
 console.log('wizardo exists', wizardoFolderExists());
 
 const configFileExists = () =>
   getFiles(".wizardo/")
-    .reduce((acc, f) => acc || f.endsWith("config.js"), false);
+    .reduce((acc, f) => acc || f.endsWith("config.json"), false);
 console.log('config file exists', configFileExists());
 
 
@@ -84,6 +94,43 @@ console.log('config file exists', configFileExists());
  *
  **/
 
+import config from './wizgenerator.config.json';
+const stage5 = (generator_name, vars) => {
+  console.log('stage5', generator_name, vars);
+
+      console.log('templates', config.templates);
+
+  const create_view = (mod_name, view_name) => {
+
+    // get destinations
+    // for each
+    //   generate the needed path
+    //   copy template & replace variables
+
+    for (let i = 0; i < dirs.length; i++){
+      let dir = h.rplc_mod(mod_name, dirs[i]);
+      dir = h.rplc_view(view_name, dir);
+
+      if(h.isFile(dir)){
+        let src = "scripts/generators/templates/view/" + dirs[i].split("/").pop();
+
+        h.cp(src, dir, function(data) {
+          let result = h.rplc_view(view_name, data);
+          return result;
+        });
+      } else {
+        try {
+          fs.mkdirpSync(dir)
+          h.print_create_path(dir);
+        } catch(e) {
+          throw e;
+        }
+      }
+    }
+  }
+  return true;
+}
+
 
 /* PIPELINE - stage 6
  * Modify existing files
@@ -97,3 +144,4 @@ console.log('config file exists', configFileExists());
  *
  **/
 
+module.exports = { stage5 };
