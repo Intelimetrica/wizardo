@@ -9,10 +9,7 @@ const cp = (src, target, callback) => {
     let result = callback(data);
 
     fs.writeFile(target, result, 'utf8', function (err) {
-      if (err) {
-        console.log('que fue compa', target, result);
-        return console.log(err);
-      }
+      if (err) { return console.log(err); }
     });
 
     if (src === target) log.modify(target);
@@ -138,19 +135,20 @@ const log = {
 module.exports = {
   cp: cp,
   getGenerators: getGenerators,
-  get_existing_modules: get_existing_modules,
-  get_existing_views: get_existing_views,
+  wizardoFolderExists: wizardoFolderExists,
   getFiles: getFiles,
   getFolders: getFolders,
-  insert_code: insert_code,
   isFile: isFile,
   log: log,
   replaceVariables: replaceVariables,
+
+  insert_code: insert_code,
   rplc_mod: rplc_mod,
   rplc_view: rplc_view,
   verify_module_exists: verify_module_exists,
   view_already_exists: view_already_exists,
-  wizardoFolderExists: wizardoFolderExists
+  get_existing_modules: get_existing_modules,
+  get_existing_views: get_existing_views,
 };
 
 

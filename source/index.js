@@ -92,7 +92,7 @@ program
       for (let gen of templates) {
         cp(join(__dirname, "/templates/" + gen.source_template),
           replaceVariables(join(gen.destination, gen.source_template), {generator: generator}),
-          data => replaceVariables(data, {generator: generator, source_template: 'templado'})
+          data => replaceVariables(data, {generator: generator})
         );
       }
     }
