@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import program from 'commander';
-import prompt  from 'co-prompt';
 import { magenta, yellow, green, red} from 'chalk';
 import {
   cp,
@@ -117,7 +116,8 @@ program
  */
 import {
   checkConfigFile as stage1,
-  gitIsClean as stage2
+  gitIsClean as stage2,
+  promptForVariables as stage3
 } from './pipeline';
 program
   .command('run <generator>')
@@ -127,7 +127,7 @@ program
     console.log(green(`Run pipeline.js rules with \`${generator}\` rules `));
     console.log('stage1', stage1(generator));
     console.log('stage2', stage2(generator));
-    console.log('stage3');
+    console.log('stage3', stage3(generator));
 
   });
 

@@ -46,7 +46,6 @@ const checkConfigFile = generator => {
  *
  **/
 
-import git from 'simple-git/promise';
 import { spawnSync } from 'child_process';
 
 const gitIsClean = () => {
@@ -58,9 +57,11 @@ const gitIsClean = () => {
     process.exit(1);
   }
 
-  let git_status = spawnSync('git', ['status', '--porcelain']).stdout.toString('utf8');
-  if (git_status != "") {
-    let uncommitted = git_status.split('\n');
+  let uncommitted = spawnSync('git', ['status', '--porcelain'])
+    .stdout
+    .toString('utf8')
+    .split('\n');
+  if (uncommitted != "") {
     log.danger(`You have uncommitted files in this repo.`)
     uncommitted.forEach(e => {if (e != '') log.danger(`\b\b  ${e}`)});
     log.msg('   + Please, commit your changes before running a generator');
@@ -96,7 +97,39 @@ const gitIsClean = () => {
  *
  **/
 
+import { readFileSync } from 'fs.extra';
+import { join } from 'path';
+const prompt = require('prompt-sync')();
 
+const promptForVariables = generator => {
+  // TODO: extract variables inside templates
+  let gen_text = readFileSync(join('.wizardo', `${generator}.config.json`), 'utf8');
+
+  let var_keys = [];
+  let simpleMatch = gen_text.match(/<%=(\w+)=%>/g);
+  let underscoreMatch = gen_text.match(/___(\w+)___/g);
+
+  if (simpleMatch) {
+    var_keys.push(...simpleMatch.map(e =>
+      e
+      .replace('<%=','')
+      .replace('=%>', '')
+    ));
+  }
+  if (underscoreMatch) {
+    var_keys.push(...underscoreMatch.map(e =>
+      e.replace(/___/g,'')
+    ));
+  }
+
+  let vars = {};
+  log.msg('   * Enter the value for the following variables in your config file')
+  for (let k of var_keys) {
+    vars[k] = prompt(` ${k}: `);
+  }
+
+  return vars;
+}
 
 /* PIPELINE - stage 4
  * Given config file paths, generate all necessary paths
@@ -172,4 +205,4 @@ const stage5 = (generator_name, vars) => {
  *
  **/
 
-module.exports = { stage5, checkConfigFile, gitIsClean };
+module.exports = { stage5, checkConfigFile, gitIsClean, promptForVariables };
