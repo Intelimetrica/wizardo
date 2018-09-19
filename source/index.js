@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 import program from 'commander';
-import { magenta, yellow, green, red} from 'chalk';
+import { flow } from 'botas';
+import {  yellow, green, red} from 'chalk';
 import {
-  cp,
+  copy,
   getGenerators,
   log,
   replaceVariables,
@@ -33,7 +34,7 @@ program
   .action(() => {
     log.command('init');
     if (wizardoFolderExists()) {
-      console.log(' - A Wizardo project already exists in this folder');
+      log.msg(' - A Wizardo project already exists in this folder');
     } else {
       [ './.wizardo', './.wizardo/templates' ]
         .forEach(e => {
@@ -70,7 +71,7 @@ program
       log.msg(generators.reduce((acc, f) => `${acc}   + ${f}\n`, ''));
     } else {
       //run wizgenerator.config.json
-      console.log(yellow(`New generator \`${generator}\` created`));
+      log.msg(` - New generator \`${generator}\` created`);
 
       // generate folders
       for (let gen of templates) {
@@ -89,23 +90,13 @@ program
 
       // Create files from templates
       for (let gen of templates) {
-        cp(join(__dirname, "/templates/" + gen.source_template),
+        copy(join(__dirname, "/templates/" + gen.source_template),
           replaceVariables(join(gen.destination, gen.source_template), {generator: generator}),
           data => replaceVariables(data, {generator: generator})
         );
       }
     }
   });
-
-program
-  .command('test')
-  .action(generator => {
-    log.command('test');
-    for (let gen of templates) {
-      console.log(replaceVariables(join(gen.destination, gen.source_template), {generator: generator}));
-    }
-  });
-
 
 /**
  * run
@@ -114,24 +105,15 @@ program
  *
  * @param {string} generator - Name of generator. It should be in snake_case
  */
-import {
-  checkConfigFile as stage1,
-  gitIsClean as stage2,
-  promptForVariables as stage3,
-  generateDestinationFolders as stage4
-} from './pipeline';
+import { pipeline } from './pipeline';
+
 program
   .command('run <generator>')
   .description('run generator given .wizardo/<generator>.config.json')
   .action(generator => {
     log.command(`run ${generator}`);
-    console.log(green(`Run pipeline.js rules with \`${generator}\` rules `));
-    console.log('stage1', stage1(generator));
-    console.log('stage2', stage2(generator));
-    let vars = stage3(generator);
-    console.log('stage3', vars);
-
-    console.log('stage4', stage4(generator, vars));
+    let result = pipeline(generator);
+    if (result === true) log.command(`run ${generator} - DONE!`)
 
   });
 
@@ -155,7 +137,7 @@ program
   .command('*')
   .description('not a command')
   .action(function(cmd) {
-    console.log(red(`Wizardo ${v}: command \`${cmd}\` not found`));
+    log.danger(`Wizardo ${v}: command \`${cmd}\` not found`);
   });
 
 program

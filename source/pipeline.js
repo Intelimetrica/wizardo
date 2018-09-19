@@ -34,7 +34,7 @@ const checkConfigFile = generator => {
       log.msg('   + The available generators are:');
       log.msg(getGenerators().reduce((acc, f) => `${acc}   - ${f}\n`, ''));
       process.exit(1);
-    } else return true;
+    } else return generator;
   }
 };
 
@@ -48,9 +48,7 @@ const checkConfigFile = generator => {
 
 import { spawnSync } from 'child_process';
 
-const gitIsClean = () => {
-  let response = false;
-
+const gitIsClean = (generator) => {
   if (!getFolders().includes('.git')) {
     log.danger(`Wizardo is tightly coupled with git. It seems that you don't have a git repo initialized in this directory.`)
     log.msg('   + Create a git repo and commit all your changes before running a generator')
@@ -67,7 +65,7 @@ const gitIsClean = () => {
     log.msg('   + Please, commit your changes before running a generator');
     process.exit(1);
   } else {
-    return true;
+    return generator;
   }
 }
 
@@ -122,13 +120,15 @@ const promptForVariables = generator => {
     ));
   }
 
+  var_keys = new Set(var_keys);
+
   let vars = {};
   log.msg('\n  Enter the value for the following variables in your config file')
   for (let k of var_keys) {
     vars[k] = prompt(`   ${k}: `);
   }
 
-  return vars;
+  return [generator, vars];
 }
 
 /* PIPELINE - stage 4
@@ -146,15 +146,20 @@ const promptForVariables = generator => {
  *      client/assets/Payment/ should be created at this stage.
  *
  **/
-import { replaceVariables } from './utils';
-const generateDestinationFolders = (generator, vars) => {
-  let gen_text = readFileSync(join('.wizardo', `${generator}.config.json`), 'utf8');
+import { replaceVariables, parseGenerator } from './utils';
+import { existsSync, mkdirpSync } from 'fs.extra';
+const generateDestinationFolders = ([generator, vars]) => {
+  const { templates } = parseGenerator(generator, vars);
+  if (!templates) return vars;
 
-  gen_text = replaceVariables(gen_text, vars);
-  console.log(gen_text);
-  const { templates } = JSON.parse(gen_text);
+  for (let temp of templates) {
+    if (!existsSync(temp.destination)) {
+      mkdirpSync(temp.destination);
+      log.folder(temp.destination);
+    }
+  }
 
-  return templates;
+  return [generator, vars];
 }
 
 
@@ -170,36 +175,24 @@ const generateDestinationFolders = (generator, vars) => {
  **/
 
 import config from './wizgenerator.config.json';
-const stage5 = (generator_name, vars) => {
-  const create_view = (mod_name, view_name) => {
+import {copy } from './utils';
+const generateFilesFromTemplates = ([generator, vars]) => {
+  const {templates} = parseGenerator(generator, vars);
+  if (!templates) return vars;
 
-    // get destinations
-    // for each
-    //   generate the needed path
-    //   copy template & replace variables
-
-    for (let i = 0; i < dirs.length; i++){
-      let dir = h.rplc_mod(mod_name, dirs[i]);
-      dir = h.rplc_view(view_name, dir);
-
-      if(h.isFile(dir)){
-        let src = "scripts/generators/templates/view/" + dirs[i].split("/").pop();
-
-        h.cp(src, dir, function(data) {
-          let result = h.rplc_view(view_name, data);
-          return result;
-        });
-      } else {
-        try {
-          fs.mkdirSync(dir)
-          h.print_create_path(dir);
-        } catch(e) {
-          throw e;
-        }
-      }
+  try {
+    for (let temp of templates) {
+      copy(
+        join(".wizardo/templates", temp.source_template),
+        join(temp.destination, temp.file_name),
+        template_text => replaceVariables(template_text, vars)
+      )
     }
+  } catch (err) {
+    log.danger(err);
   }
-  return true;
+
+  return [generator, vars];
 }
 
 
@@ -214,11 +207,40 @@ const stage5 = (generator_name, vars) => {
  * Steps to be defined
  *
  **/
+import { insertCode } from './utils';
+const executeModifiers = ([generator, vars]) => {
+  const {modifiers} = parseGenerator(generator, vars);
+  if (!modifiers) return vars;
+
+  try {
+    for (let mod of modifiers) {
+      copy(
+        mod.path_to_file,
+        mod.path_to_file,
+        text => insertCode(text, mod.text_to_insert, mod.regex)
+      );
+    }
+  } catch (err) {
+    log.danger(err);
+  }
+  return true;
+}
+
+import { flow } from 'botas';
 
 module.exports = {
-  stage5,
+  generateFilesFromTemplates,
   checkConfigFile,
   gitIsClean,
   promptForVariables,
   generateDestinationFolders,
+  executeModifiers,
+  pipeline: flow([
+    checkConfigFile,
+    gitIsClean,
+    promptForVariables,
+    generateDestinationFolders,
+    generateFilesFromTemplates,
+    executeModifiers,
+  ])
 };

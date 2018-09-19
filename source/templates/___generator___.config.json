@@ -2,9 +2,15 @@
   "generator": "<%=generator=%>",
   "templates": [
     {
-      "source_template": "<%=source_template=%>.sample",
+      "source_template": "<%=example.js=%>",
       "destination": "path/to/<%=destination=%>"
     }
   ],
-  "modify": []
+  "modify": [
+    {
+      "path_to_file": "path/to/existing/existing_file.js",
+      "regex": "Hello World ___view___\n",
+      "text_to_insert": "Just matched with `___view___`\n"
+    }
+  ]
 }
