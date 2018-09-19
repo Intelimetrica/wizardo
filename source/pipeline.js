@@ -1,5 +1,5 @@
-/* stage 1 - Check if config file exists
- * stage 2 - Check that git is empty
+/* stage 1 - checkConfigFile - Check if config file exists
+ * stage 2 - gitIsClean - Check that git is empty
  * stage 3 - Prompt for variables
  * stage 4 - Generate needed folders
  * stage 5 - Copy templates & Replace variables in created templates
@@ -9,26 +9,34 @@
 /* PIPELINE - stage 1
  * Ask for config file
  *
- * WORKING ON THE BASE CASE HERE
- * Meaning that we only have 1 generator.
- * In a future, we could have multiple generators, so we will need to detect
- * the config for each generator
- *
  * 1. Look for .wizardo folder
- * 2. Find *config.js
+ * 2. Find <generator>.config.json
  *
  **/
 
-import { getFolders, getFiles } from './utils';
+import { getFolders, getFiles, log} from './utils';
 
+import { getGenerators, wizardoFolderExists } from './utils';
 
-const wizardoFolderExists = () => getFolders().includes(".wizardo");
-console.log('wizardo exists', wizardoFolderExists());
-
-const configFileExists = () =>
-  getFiles(".wizardo/")
-    .reduce((acc, f) => acc || f.endsWith("config.json"), false);
-console.log('config file exists', configFileExists());
+const checkConfigFile = generator => {
+  if (!wizardoFolderExists()) {
+    log.danger('A Wizardo project was not found in the current directory');
+    log.msg('   + Run `wizardo init` to create a wizardo project');
+    process.exit(1);
+  } else {
+    let generators = getGenerators();
+    if (generators.length <= 0) {
+      log.danger(`There are no generators in this Wizardo project, so \`${generator}.config.json\` was not found`);
+      log.msg('   + Run `wizardo create <generator_name>` to create a new generator');
+      process.exit(1);
+    } else if (!getGenerators().includes(generator)) {
+      log.danger(`Config file ${generator}.config.json was not found`);
+      log.msg('   + The available generators are:');
+      log.msg(getGenerators().reduce((acc, f) => `${acc}   - ${f}\n`, ''));
+      process.exit(1);
+    } else return true;
+  }
+};
 
 
 /* PIPELINE - stage 2
@@ -38,6 +46,29 @@ console.log('config file exists', configFileExists());
  *
  **/
 
+import git from 'simple-git/promise';
+import { spawnSync } from 'child_process';
+
+const gitIsClean = () => {
+  let response = false;
+
+  if (!getFolders().includes('.git')) {
+    log.danger(`Wizardo is tightly coupled with git. It seems that you don't have a git repo initialized in this directory.`)
+    log.msg('   + Create a git repo and commit all your changes before running a generator')
+    process.exit(1);
+  }
+
+  let git_status = spawnSync('git', ['status', '--porcelain']).stdout.toString('utf8');
+  if (git_status != "") {
+    let uncommitted = git_status.split('\n');
+    log.danger(`You have uncommitted files in this repo.`)
+    uncommitted.forEach(e => {if (e != '') log.danger(`\b\b  ${e}`)});
+    log.msg('   + Please, commit your changes before running a generator');
+    process.exit(1);
+  } else {
+    return true;
+  }
+}
 
 /* PIPELINE - stage 3
  * Prompt for script variables. For example:
@@ -141,4 +172,4 @@ const stage5 = (generator_name, vars) => {
  *
  **/
 
-module.exports = { stage5 };
+module.exports = { stage5, checkConfigFile, gitIsClean };

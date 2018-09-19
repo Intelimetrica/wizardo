@@ -115,12 +115,19 @@ program
  *
  * @param {string} generator - Name of generator. It should be in snake_case
  */
+import {
+  checkConfigFile as stage1,
+  gitIsClean as stage2
+} from './pipeline';
 program
   .command('run <generator>')
   .description('run generator given .wizardo/<generator>.config.json')
   .action(generator => {
-    log.command('run');
+    log.command(`run ${generator}`);
     console.log(green(`Run pipeline.js rules with \`${generator}\` rules `));
+    console.log('stage1', stage1(generator));
+    console.log('stage2', stage2(generator));
+    console.log('stage3');
 
   });
 
