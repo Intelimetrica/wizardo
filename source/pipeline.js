@@ -123,9 +123,9 @@ const promptForVariables = generator => {
   }
 
   let vars = {};
-  log.msg('   * Enter the value for the following variables in your config file')
+  log.msg('\n  Enter the value for the following variables in your config file')
   for (let k of var_keys) {
-    vars[k] = prompt(` ${k}: `);
+    vars[k] = prompt(`   ${k}: `);
   }
 
   return vars;
@@ -146,6 +146,16 @@ const promptForVariables = generator => {
  *      client/assets/Payment/ should be created at this stage.
  *
  **/
+import { replaceVariables } from './utils';
+const generateDestinationFolders = (generator, vars) => {
+  let gen_text = readFileSync(join('.wizardo', `${generator}.config.json`), 'utf8');
+
+  gen_text = replaceVariables(gen_text, vars);
+  console.log(gen_text);
+  const { templates } = JSON.parse(gen_text);
+
+  return templates;
+}
 
 
 
@@ -205,4 +215,10 @@ const stage5 = (generator_name, vars) => {
  *
  **/
 
-module.exports = { stage5, checkConfigFile, gitIsClean, promptForVariables };
+module.exports = {
+  stage5,
+  checkConfigFile,
+  gitIsClean,
+  promptForVariables,
+  generateDestinationFolders,
+};

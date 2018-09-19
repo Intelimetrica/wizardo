@@ -117,7 +117,8 @@ program
 import {
   checkConfigFile as stage1,
   gitIsClean as stage2,
-  promptForVariables as stage3
+  promptForVariables as stage3,
+  generateDestinationFolders as stage4
 } from './pipeline';
 program
   .command('run <generator>')
@@ -127,7 +128,10 @@ program
     console.log(green(`Run pipeline.js rules with \`${generator}\` rules `));
     console.log('stage1', stage1(generator));
     console.log('stage2', stage2(generator));
-    console.log('stage3', stage3(generator));
+    let vars = stage3(generator);
+    console.log('stage3', vars);
+
+    console.log('stage4', stage4(generator, vars));
 
   });
 
