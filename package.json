@@ -1,6 +1,6 @@
 {
   "name": "wizardo",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Intelimetrica's code generator",
   "main": "./distribution/index.js",
   "scripts": {
