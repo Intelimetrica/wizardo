@@ -9,6 +9,7 @@ import {
 
 import { version } from '../package.json';
 import { join } from 'path';
+import { snakeToCamelCase } from 'botas';
 
 const copy = (src, target, callback) => {
   readFile(src, 'utf8', function (err,data) {
@@ -54,10 +55,9 @@ const replaceVariables = (text, variables) => {
       if (ans.includes(`___${key}___`)) {
         ans = ans.replace(RegExp(`___${key}___`,'gi'), value);
       }
-      // TODO Handle PascalCase - Use botas
-      if (ans.indexOf("__ModuleName__") !== -1) {
-        let classed = value.split("_").map(el => el.charAt(0).toUpperCase() + el.slice(1)).join("");
-        ans = ans.replace(/__ModuleName__/gi, classed);
+      const key_pascal = snakeToCamelCase(key);
+      if (ans.includes(`___${key_pascal}___`)) {
+        ans = ans.replace(RegExp(`___${key_pascal}___`,'gi'), snakeToCamelCase(value, true));
       }
     });
   }

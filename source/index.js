@@ -2,7 +2,6 @@
 
 import program from 'commander';
 import { flow } from 'botas';
-import {  yellow, green, red} from 'chalk';
 import {
   copy,
   getGenerators,
