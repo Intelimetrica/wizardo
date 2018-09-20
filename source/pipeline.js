@@ -98,6 +98,7 @@ const gitIsClean = (generator) => {
 import { readFileSync } from 'fs.extra';
 import { join } from 'path';
 const prompt = require('prompt-sync')();
+import {pascalToSnakeCase} from './utils';
 
 const promptForVariables = generator => {
   // TODO: extract variables inside templates
@@ -116,7 +117,7 @@ const promptForVariables = generator => {
   }
   if (underscoreMatch) {
     var_keys.push(...underscoreMatch.map(e =>
-      e.replace(/___/g,'')
+      pascalToSnakeCase(e.replace(/___/g,''))
     ));
   }
 
@@ -150,12 +151,12 @@ import { replaceVariables, parseGenerator } from './utils';
 import { existsSync, mkdirpSync } from 'fs.extra';
 const generateDestinationFolders = ([generator, vars]) => {
   const { templates } = parseGenerator(generator, vars);
-  if (!templates) return vars;
+  if (!templates) return [generator, vars];
 
   for (let temp of templates) {
-    if (!existsSync(temp.destination)) {
-      mkdirpSync(temp.destination);
-      log.folder(temp.destination);
+    if (!existsSync(temp.final_destination)) {
+      mkdirpSync(temp.final_destination);
+      log.folder(temp.final_destination);
     }
   }
 
@@ -184,7 +185,7 @@ const generateFilesFromTemplates = ([generator, vars]) => {
     for (let temp of templates) {
       copy(
         join(".wizardo/templates", temp.source_template),
-        join(temp.destination, temp.file_name),
+        join(temp.final_destination, temp.file_name),
         template_text => replaceVariables(template_text, vars)
       )
     }

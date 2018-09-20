@@ -6,7 +6,7 @@
       "destination": "path/to/<%=destination=%>"
     }
   ],
-  "modify": [
+  "modifiers": [
     {
       "path_to_file": "path/to/existing/existing_file.js",
       "regex": "Hello World ___view___\n",

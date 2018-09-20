@@ -55,7 +55,7 @@ const replaceVariables = (text, variables) => {
       if (ans.includes(`___${key}___`)) {
         ans = ans.replace(RegExp(`___${key}___`,'gi'), value);
       }
-      const key_pascal = snakeToCamelCase(key);
+      const key_pascal = snakeToCamelCase(key, true);
       if (ans.includes(`___${key_pascal}___`)) {
         ans = ans.replace(RegExp(`___${key_pascal}___`,'gi'), snakeToCamelCase(value, true));
       }
@@ -71,6 +71,7 @@ const parseGenerator = (generator, vars) => {
   let json = JSON.parse(gen_text);
   for (let template of json.templates) {
     template['file_name'] = replaceVariables(template.source_template, vars);
+    template['final_destination'] = replaceVariables(template.destination, vars);
   }
   for (let modifier of json.modifiers) {
     modifier['regex'] = replaceVariables(modifier["regex"], vars);
@@ -84,6 +85,13 @@ const insertCode = (complete_text, text_to_insert, regex) => {
   const rgx = RegExp(regex);
   const prefix = rgx.exec(complete_text)[0];
   return complete_text.replace(prefix, `${prefix}${text_to_insert}`);
+}
+
+const pascalToSnakeCase = str => {
+  if (str.match(/[A-Z]/)) {
+    str = str.replace(/([A-Z])/g, "_$1").replace(/_/,'').toLowerCase();
+  }
+  return str;
 }
 
 const log = {
@@ -103,6 +111,7 @@ module.exports = {
   insertCode,
   log,
   parseGenerator,
+  pascalToSnakeCase,
   replaceVariables,
   wizardoFolderExists,
 };
