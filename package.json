@@ -41,5 +41,8 @@
     "babel-preset-es2015": "^6.24.1",
     "jest": "^23.0.1",
     "jsdoc": "~3.5.5"
-  }
+  },
+  "files": [
+    "distribution"
+  ]
 }
