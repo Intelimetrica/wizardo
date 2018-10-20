@@ -31,6 +31,9 @@
   },
   "homepage": "https://github.com/Intelimetrica/wizardo#readme",
   "dependencies": {
+    "antd": "^3.10.1",
+    "babel-plugin-import": "^1.10.0",
+    "babel-preset-env": "^1.7.0",
     "botas": "^1.2.4",
     "chalk": "2.4.1",
     "commander": "2.18.0",
