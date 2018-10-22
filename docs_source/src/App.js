@@ -1,12 +1,13 @@
-import React from 'react'
-import { Router, Link } from 'react-static'
-import { hot } from 'react-hot-loader'
-//
-import Routes from 'react-static-routes'
+import React from 'react';
+import { Router, Link } from 'react-static';
+import { hot } from 'react-hot-loader';
+//;
+import Routes from 'react-static-routes';
 import { Button } from 'antd';
+import Navbar from './components/Navbar';
 
 import 'antd/dist/antd.css';
-import './app.css'
+import './app.css';
 
 const App = () => (
   <Router>
@@ -16,6 +17,7 @@ const App = () => (
         <Link to="/about">About</Link>
         <Link to="/blog">Blog</Link>
       </nav>
+      <Navbar />
       <div className="content">
         <Button>default</Button>
         <Routes />
