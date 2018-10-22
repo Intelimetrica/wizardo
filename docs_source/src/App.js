@@ -3,11 +3,12 @@ import { Router, Link } from 'react-static';
 import { hot } from 'react-hot-loader';
 //;
 import Routes from 'react-static-routes';
-import { Button } from 'antd';
 import Navbar from './components/Navbar';
 
 import 'antd/dist/antd.css';
 import './app.css';
+
+/* TODO: remove blog and request of blogs in compilation */
 
 const App = () => (
   <Router>
@@ -19,7 +20,6 @@ const App = () => (
       </nav>
       <Navbar />
       <div className="content">
-        <Button>default</Button>
         <Routes />
       </div>
     </div>
