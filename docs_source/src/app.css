@@ -7,27 +7,68 @@ body {
   padding: 0;
 }
 
-a {
-  text-decoration: none;
-  color: #108db8;
-  font-weight: bold;
+pre { font-family: monospace; }
+h1, h2, h3, h4, h5, h6 { color: #444; }
+img { max-width: 100%; }
+section { padding: 50px }
+
+.content { padding: 1rem; }
+
+.logo {
+  padding: 16px;
+  background: #f0f2f4;
 }
 
-img {
-  max-width: 100%;
+.jumbotron {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  position: relative;
+  text-align: center;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 }
 
-nav {
+.installation {
+  background: gainsboro;
+  height: 300px;
+  display: flex;
+  padding: 50px;
+  align-items: center;
+  justify-content: center;
+}
+.installation .anticon {
+  font-size: 100px;
+}
+.installation .code-snippet{
   width: 100%;
-  background: #108db8;
+  padding: 25px;
+  background: #f0f2f4;
+  display: flex;
+  justify-content: flex-start;
+  /* shadow */
+  max-width: 1000px;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+}
+.installation pre {
+  font-family: monospace;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  margin: 0 0 0 50px;
+  font-size: 1.25em;
+}
+.what-is-it .explanation{
 }
 
-nav a {
-  color: white;
-  padding: 1rem;
-  display: inline-block;
+@media (max-width: 885px) {
+  .installation i {
+    display: none;
+  }
+  .installation pre { margin-left: 10px }
 }
 
-.content {
-  padding: 1rem;
-}
