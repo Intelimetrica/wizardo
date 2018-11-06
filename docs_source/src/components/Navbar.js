@@ -15,6 +15,7 @@ class App extends React.Component {
         >
           <Menu.Item key='1'> <Link to='/'>Home</Link> </Menu.Item>
           <SubMenu key='sub1' title={<Link to='/guides'>Guides</Link>} >
+            <Menu.Item key='11'>  <Link to='/guides#first-steps'>First steps</Link></Menu.Item>
             <Menu.Item key='5'>  <Link to='/guides#generators'>Create a generator</Link></Menu.Item>
             <Menu.Item key='6'>  <Link to='/guides#templates'>Templates </Link></Menu.Item>
             <Menu.Item key='7'>  <Link to='/guides#variables-config'>Variables in config</Link></Menu.Item>
