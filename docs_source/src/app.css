@@ -7,7 +7,7 @@ body {
   padding: 0;
 }
 
-pre { font-family: monospace; border-radius: 5px; }
+pre { font-family: monospace; border-radius: 5px; font-size: 0.8em}
 h1, h2, h3, h4, h5, h6 { color: #444; }
 img { max-width: 100%; }
 section {
@@ -15,9 +15,10 @@ section {
   font-size: 1.2em;
   line-height: 1.7;
 }
-section p { margin: 40px 60px 0 30px }
+section p { margin: 20px 60px 0 30px }
 section h1 { font-weight: 700; font-size: 2em }
-section h2 { font-weight: 700; font-size: 1.2em; margin-left: 15px}
+section h2 { font-weight: 700; font-size: 1.2em; margin: 15px}
+section h3 { font-weight: 700; font-size: 1.1em; margin: 30px 0 0 30px}
 section pre { margin: 30px }
 span code {
   border: 1px solid #dedede;
