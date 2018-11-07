@@ -11,6 +11,7 @@ import logo_horizontal from './images/logo_horizontal.svg';
 
 import 'antd/dist/antd.css';
 import './app.css';
+import '../node_modules/highlight.js/styles/atom-one-dark.css';
 
 /* TODO: remove blog and request of blogs in compilation */
 
