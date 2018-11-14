@@ -4,49 +4,47 @@
   "description": "Intelimetrica's code generator",
   "main": "./distribution/index.js",
   "scripts": {
-    "test": "jest --watch",
-    "build": "npm ci && babel source --presets babel-preset-es2015 --out-dir distribution --ignore '**/test.js' --copy-files",
-    "dev": "babel source --presets babel-preset-es2015 --out-dir distribution --ignore '**/test.js' --watch --copy-files"
-  },
+      "test": "jest --watch",
+      "build": "npm ci && babel source --presets babel-preset-es2015 --out-dir distribution --ignore '**/test.js' --copy-files",
+      "dev": "babel source --presets babel-preset-es2015 --out-dir distribution --ignore '**/test.js' --watch --copy-files"
+    },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Intelimetrica/wizardo.git"
-  },
+      "type": "git",
+      "url": "git+https://github.com/Intelimetrica/wizardo.git"
+    },
   "keywords": [
-    "Code",
-    "generator",
-    "wizard",
-    "boilerplate",
-    "initial",
-    "setup",
-    "Intelimetrica"
-  ],
+      "Code",
+      "generator",
+      "wizard",
+      "boilerplate",
+      "initial",
+      "setup",
+      "Intelimetrica"
+    ],
   "author": "Intelimetrica",
   "license": "ISC",
   "bin": {
-    "wizardo": "./distribution/index.js"
-  },
+      "wizardo": "./distribution/index.js"
+    },
   "bugs": {
-    "url": "https://github.com/Intelimetrica/wizardo/issues"
-  },
+      "url": "https://github.com/Intelimetrica/wizardo/issues"
+    },
   "homepage": "https://github.com/Intelimetrica/wizardo#readme",
   "dependencies": {
-    "antd": "^3.10.1",
-    "babel-plugin-import": "^1.10.0",
-    "babel-preset-env": "^1.7.0",
-    "botas": "^1.2.4",
-    "chalk": "2.4.1",
-    "commander": "2.18.0",
-    "fs.extra": "1.3.2",
-    "prompt-sync": "4.1.6"
-  },
+      "botas": "^1.2.4",
+      "chalk": "2.4.1",
+      "commander": "2.18.0",
+      "fs.extra": "1.3.2",
+      "prompt-sync": "4.1.6"
+    },
   "devDependencies": {
-    "babel-cli": "6.26.0",
-    "babel-preset-es2015": "6.24.1",
-    "jest": "23.0.1",
-    "jsdoc": "~3.5.5"
-  },
+      "babel-cli": "6.26.0",
+      "babel-preset-es2015": "6.24.1",
+      "jest": "23.0.1",
+      "jsdoc": "~3.5.5"
+    },
   "files": [
-    "distribution"
-  ]
+      "distribution"
+    ]
 }
+
