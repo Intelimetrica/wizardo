@@ -124,9 +124,12 @@ const promptForVariables = generator => {
   var_keys = new Set(var_keys);
 
   let vars = {};
-  log.msg('\n  Enter the value for the following variables in your config file')
-  for (let k of var_keys) {
-    vars[k] = prompt(`   ${k}: `);
+
+  if (Object.keys(var_keys) > 0) {
+    log.msg('\n  Enter the value for the following variables in your config file')
+    for (let k of var_keys) {
+      vars[k] = prompt(`   ${k}: `);
+    }
   }
 
   return [generator, vars];
