@@ -17,8 +17,8 @@ class App extends React.Component {
           <SubMenu key='sub1' title={<Link to='/guides'>Guides</Link>} >
             <Menu.Item key='11'>  <Link to='/guides#first-steps'>First steps</Link></Menu.Item>
             <Menu.Item key='5'>  <Link to='/guides#generators'>Create a generator</Link></Menu.Item>
-            <Menu.Item key='6'>  <Link to='/guides#templates'>Templates </Link></Menu.Item>
-            <Menu.Item key='7'>  <Link to='/guides#variables-config'>Variables in config</Link></Menu.Item>
+            <Menu.Item key='6'>  <Link to='/guides#templates'>Templates</Link></Menu.Item>
+            <Menu.Item key='7'>  <Link to='/guides#variables'>Variables</Link></Menu.Item>
             <Menu.Item key='8'>  <Link to='/guides#variables-templates'>Variables in templates</Link></Menu.Item>
             <Menu.Item key='9'>  <Link to='/guides#modifiers'>Modifiers</Link></Menu.Item>
             <Menu.Item key='10'> <Link to='/guides#run-the-generator'>Run the generator</Link></Menu.Item>

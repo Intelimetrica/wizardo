@@ -160,38 +160,157 @@ export default withRouteData((props) => (
   <h2>1. Templates folder </h2>
   <p><InlineCode>.wizardo/</InlineCode> folder has a folder called <InlineCode>templates/</InlineCode> in which we need to place our templates.<br />
     This is the place where Wizardo looks for templates. So lets go and copy our <InlineCode>index.html</InlineCode> into that location by:
-    </p>
-    <Highlight className='bash'>
-      {` ~/website$ cp index.html .wizardo/templates/
+  </p>
+  <Highlight className='bash'>
+    {` ~/website$ cp index.html .wizardo/templates/
  ~/website$ ls .wizardo/templates/
    index.html `}
-  </Highlight>
+ </Highlight>
 
-  <h2>2. Templates structure in config file</h2>
-  <p>Great, now that we have a template in <InlineCode>.wizardo/templates/</InlineCode> we need to let know our generator (<InlineCode>page_generator.config.json</InlineCode>) that whenever it runs, we are going to create a new file based on our template </p>
-  <p>The content of <InlineCode>templates</InlineCode> key of the configuration file for a generator is really simple. It contains an array of sources and destinations. The <InlineCode>source_template</InlineCode> key indicates the name of our template inside the <InlineCode>templates/</InlineCode> folder, and the <InlineCode>destination</InlineCode> key, is the path in which is going to reside the file that wizardo will generate.</p>
-  <p>Lets say that in our website we will have folder <InlineCode>pages/</InlineCode> to hold all of our pages. So lets go and modify <InlineCode>page_generator.config.json</InlineCode> to indicate our intention:</p>
-          <Highlight className='json'>
-    {`{
+ <h2>2. Templates structure in config file</h2>
+ <p>Great, now that we have a template in <InlineCode>.wizardo/templates/</InlineCode> we need to let know our generator (<InlineCode>page_generator.config.json</InlineCode>) that whenever it runs, we are going to create a new file based on our template </p>
+ <p>The content of <InlineCode>templates</InlineCode> key of the configuration file for a generator is really simple. It contains an array of sources and destinations. The <InlineCode>source_template</InlineCode> key indicates the name of our template inside the <InlineCode>templates/</InlineCode> folder, and the <InlineCode>destination</InlineCode> key, is the path in which is going to reside the file that wizardo will generate.</p>
+ <p>Lets say that in our website we will have folder <InlineCode>pages/</InlineCode> to hold all of our pages. So lets go and modify <InlineCode>page_generator.config.json</InlineCode> to indicate our intention:</p>
+ <Highlight className='json'>
+   {`{
   "generator": "page_generator",
   "templates": [
     {
       "source_template": "index.html",
-      "destination": "pages/index.html"
+      "destination": "pages"
     }
-  ]
+  ],
+  "modifiers": []
 }`}
           </Highlight>
-          <p><strong>Note</strong> that we removed the <InlineCode>modifiers</InlineCode> key. <Link to="/guides#modifiers"><em>Later</em></Link> on this guide we will go on to this part, but for now, just delete the key and its content so we can see wizardo in action.</p>
+          <p><strong>Note</strong> that we removed the content of <InlineCode>modifiers</InlineCode> key. <Link to="/guides#modifiers"><em>Later</em></Link> on this guide we will go on to this part, but for now, just the array empty so we can see wizardo in action.</p>
 
-  <h2>3. Run generator to test templates</h2>
+          <h2>3. Run generator to test templates</h2>
+          <p>To run the <InlineCode>page_generator</InlineCode> execute:</p>
+          <Highlight className='bash'>
+            {
+              ` ~/website$ wizardo run page_generator
+ Wizardo: run page_generator
+   - Wizardo is tightly coupled with git.
+     It seems that you dont have a git repo initialized in this directory.
+   + Create a git repo and commit all your changes before running a generator` }
+ </Highlight>
 
-</Section>
+ <p>As the error messages says, wizardo rely on git to execute the rollbacks. So first we need to create a git repo and commit our changes</p>
+ <Highlight className='bash'>
+   {
+     ` ~/website$ git init
+ ~/website$ git add .
+ ~/website$ git commit -m "Initialize wizardo"` }
+  </Highlight>
 
-<Section id='variables-config'>
-  <h1>Variables in config</h1>
-  <h2>explain how variables can be included as part of source_template and destination paths in templates</h2>
-  <h2>Explain how these variables are going to be promped while runing the generator</h2>
+  <p>Once we have that down, we can proceed to try running the <InlineCode>page_generator</InlineCode> again.</p>
+  <Highlight className='bash'>
+    {` ~/website$ wizardo run page_generator
+ Wizardo: run page_generator
+   create: pages
+ Wizardo: run page_generator - DONE!
+   create: pages/index.html` }
+ </Highlight>
+ <p><strong>Note</strong> that wizardo created the <InlineCode>pages/</InlineCode> folder for us and it also created a copy of the <InlineCode>index.html</InlineCode> from our templates.</p>
+ <Highlight className='bash'>
+   {` website/
+  ├ .wizardo/
+  │ ├─ page_generator.config.json
+  │ └─ templates/
+  │    └─ index.html
+  ├ pages/
+  │ └─ index.html
+  └ index.html `}
+</Highlight>
+  <p>Cool! Now that we learned how to generate files given a template, in the following section we will learn how to add some dynamism to our templates so we can generate files with names other than <InlineCode>index.html</InlineCode> 👍 </p>
+  </Section>
+
+<Section id='variables'>
+  <h1>Variables</h1>
+  <p>Variables are words that follow a special pattern that will be replaced with a given input at run time.</p>
+  <h2>1. Variables types</h2>
+  <p>Wizardo has three types of identifiers for variables: <br/>
+    <InlineCode>___var_name___</InlineCode>, which is the most common used. It is given by three underscores followed by the variable name in snake_case and ending with other three underscores.<br />
+    <InlineCode>___VarName___</InlineCode>, which is used similar to the previous one but uses PascalCase. This allow to use the same variables but print them in the generated files using PascalCase.<br />
+    <InlineCode>{"<%=var_name=%>"}</InlineCode>, composed with <InlineCode>{"<%="}</InlineCode> followed by the variable name in <InlineCode>snake_case</InlineCode> and ending with <InlineCode>{"=%>"}</InlineCode>. This option is available to be used in the same line as one of the previous types.<br />
+    We will see an example each of the previous variable types in the following steps of this section
+</p>
+  <h2>2. Variables in config file</h2>
+  <p>Wizardo takes variables found in the config file and prompt for their values, so at run time they are replaced with their corresponding values.</p>
+  <p>It makes sense in our example that generate pages with other names, such as <InlineCode>about</InlineCode>, <InlineCode>products</InlineCode> or <InlineCode>FAQ</InlineCode>.</p>
+  <p>So lets modify the <InlineCode>page_generator.config.json</InlineCode> file to allow dynamic page names</p>
+  <Highlight className='json'>
+     {`{
+  "generator": "page_generator",
+  "templates": [
+    {
+      "source_template": "___page_name___.html",
+      "destination": "pages"
+    }
+  ],
+  "modifiers": []
+}`}
+  </Highlight>
+  <p>This will cause the generator to fail if we run wizardo, because <InlineCode>___page_name___.html</InlineCode> does not exist in the templates. <br />
+    To fix this, lets change <InlineCode>index.html</InlineCode> name from the <InlineCode>templates/</InlineCode> folder to <InlineCode>___page_name___.html</InlineCode>
+  </p>
+  <Highlight className='bash'>
+    {" ~/website$ mv .wizardo/templates/index.html .wizardo/templates/___page_name___.html"}
+  </Highlight>
+
+  <h2>3. Run the generator</h2>
+  <p>Let see how wizardo prompts for <InlineCode>page_name</InlineCode> variables. Remember that in order to run a Wizardo generator, you need to have all the changes commited first.</p>
+  <Highlight className="bash">
+    {` ~/website$ git add .
+ ~/website$ git commit -m "Modify source_template to take a variable"
+                       -m "and created another index page in pages"
+
+ ~/website$ wizardo run page_generator
+ Wizardo: run page_generator
+   Enter the value for the following variables in your config file
+    page_name: products <-------- Insert the new page name here!`}
+  </Highlight>
+  <p>Insert <InlineCode>products</InlineCode> when asked for and hit <InlineCode>Enter</InlineCode>.
+    You will receive the following message:</p>
+<Highlight className="bash">
+    {` Wizardo: run page_generator - DONE!
+  create: pages/products.html `}
+  </Highlight>
+  <p>And you can check the file creation in your file system. It should look something like the following:</p>
+<Highlight className='bash'>
+     {` website/
+   ├ .wizardo/
+   │ ├─ page_generator.config.json
+   │ └─ templates/
+   │    └─ index.html
+   ├ pages/
+   │ ├─ products.html
+   │ └─ index.html
+   └ index.html `}
+</Highlight>
+
+  <h2>4. Variables in templates</h2>
+  <p>You can also add variables inside templates, so everytime you generate a new view based on a template, it is not just a copy, but a customized new file.</p>
+  <p>To demonstrate this, go to <InlineCode>___page_name___.html</InlineCode> and modify the content with the following:</p>
+  <Highlight className='html'>
+    {` <!DOCTYPE html>
+ <html lang="en">
+   <head>
+     <meta charset="UTF-8">
+     <title>___page_name___</title>
+   </head>
+   <body>
+     ___PageName___
+   </body>
+ </html> `}
+  </Highlight>
+  <p>
+    <strong>Note</strong> that we are inserting the variable <InlineCode>___page_name___</InlineCode> two time. One in <InlineCode>snake_case</InlineCode> notation and another one in <InlineCode>PascalCase</InlineCode> notation.
+  </p>
+  <p>An important point with variables in wizardo is that you should declare its content in <InlineCode>snake_case</InlineCode> only, and it will transform it into <InlineCode>PascalCase</InlineCode> if needed.</p>
+  <p>Lets run the generator again, this time lets use <InlineCode>about_us</InlineCode> as value of <InlineCode>___page_name___</InlineCode> so we can see the <InlineCode>PascalCase</InlineCode> transformation in action. (Remember to commit the changes before running a generator)</p>
+
   <h2>Explain snake_case and PascalCase support </h2>
   <h2>Explain the rule of always using snake_case as input while runing the generator</h2>
 </Section>
