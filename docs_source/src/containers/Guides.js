@@ -356,7 +356,7 @@ export default withRouteData((props) => (
   ]
 }`}
   </Highlight>
-  <p>This workaround tells wizardo to ask for these variables and will use the values given at runtime.</p>
+  <p>This workaround tells wizardo to ask for these variables and to use the values given at runtime.</p>
 </Section>
 
 <Section id='modifiers'>
