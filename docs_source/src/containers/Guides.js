@@ -308,18 +308,55 @@ export default withRouteData((props) => (
   <p>
     <strong>Note</strong> that we are inserting the variable <InlineCode>___page_name___</InlineCode> two time. One in <InlineCode>snake_case</InlineCode> notation and another one in <InlineCode>PascalCase</InlineCode> notation.
   </p>
-  <p>An important point with variables in wizardo is that you should declare its content in <InlineCode>snake_case</InlineCode> only, and it will transform it into <InlineCode>PascalCase</InlineCode> if needed.</p>
-  <p>Lets run the generator again, this time lets use <InlineCode>about_us</InlineCode> as value of <InlineCode>___page_name___</InlineCode> so we can see the <InlineCode>PascalCase</InlineCode> transformation in action. (Remember to commit the changes before running a generator)</p>
+  <p>An important point with variables in wizardo is that you should declare its content in <InlineCode>snake_case</InlineCode> only, and it will transform them into <InlineCode>PascalCase</InlineCode> if needed.</p>
+  <p>Lets run the generator again, this time use <InlineCode>about_us</InlineCode> as value the of <InlineCode>___page_name___</InlineCode> so we can see the <InlineCode>PascalCase</InlineCode> transformation in action. (Remember to commit the changes before running a generator).</p>
 
-  <h2>Explain snake_case and PascalCase support </h2>
-  <h2>Explain the rule of always using snake_case as input while runing the generator</h2>
-</Section>
+  <Highlight className='bash'>
+    {` ~/website$ wizardo run page_generator
+ Wizardo: run page_generator
 
-<Section id='variables-templates'>
-  <h1>Variables in templates</h1>
-  <h2>You can also have variables inside templates</h2>
-  <h2>Write TODO or reminder to support variables in templates that not necessarily are in the config file</h2>
-  <h2>modify current template to accept a variable from config.file</h2>
+ Enter the value for the following variables in your config file
+   page_name: about_us
+ Wizardo: run page_generator - DONE!
+   create: pages/about_us.html `}
+  </Highlight>
+  <p>Great. Now lets take a look to <InlineCode>pages/about_us.html</InlineCode> file</p>
+  <Highlight className='html'>
+    {` <!DOCTYPE html>
+ <html lang="en">
+   <head>
+     <meta charset="UTF-8">
+     <title>about_us</title>
+   </head>
+   <body>
+     AboutUs
+   </body>
+ </html> `}
+  </Highlight>
+  <h2>5. Limitations and workaround</h2>
+  <p>
+    At the moment wizardo look for variables only in the config file, if the variable to be replaced exists in a template but not in the generator's config file, wizardo won't prompt for that variable and you will probably end up with an un-replaced variable in the final file. <br />
+    <strong>This is a limitation</strong> that the team has in mind and we are planning to improve it in future releases.
+  </p>
+  <p>A <strong>workaround</strong> to this, is add an extra key <InlineCode>variables</InlineCode> with an array of <InlineCode>variables</InlineCode> to the <InlineCode>generator</InlineCode>'s config file. As the following:</p>
+  <Highlight className='json'>
+     {`{
+  "generator": "page_generator",
+  "templates": [
+    {
+      "source_template": "___page_name___.html",
+      "destination": "pages"
+    }
+  ],
+  "modifiers": [],
+  "variables": [
+    "___these_variables___",
+    "___exist_only_in___",
+    "___template_files___"
+  ]
+}`}
+  </Highlight>
+  <p>This workaround tells wizardo to ask for these variables and will use the values given at runtime.</p>
 </Section>
 
 <Section id='modifiers'>
@@ -332,12 +369,8 @@ export default withRouteData((props) => (
   <h2>disclosure about modifying recently created files</h2>
 </Section>
 
-<Section id='run-the-generator'>
-  <h1>Run the Generator!</h1>
-  <h2>Explain git barriers and reasons behind it</h2>
-</Section>
       </Layout.Content>
     </div>
-    </Layout>
-  </div>
+  </Layout>
+</div>
 ))
