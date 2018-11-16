@@ -12,6 +12,10 @@ export default {
         component: 'src/containers/Home',
       },
       {
+        path: '/contribute',
+        component: 'src/containers/Contribute',
+      },
+      {
         path: '/guides',
         component: 'src/containers/Guides',
       },

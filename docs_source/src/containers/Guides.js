@@ -4,11 +4,6 @@ import { Layout } from 'antd';
 import Highlight from 'react-highlight';
 //
 
-const Section = ({id, children}) => (
-  <section id={id}>
-    {children}
-  </section>
-);
 const InlineCode = ({children}) => (
   <span><code>{children}</code></span>
 );
@@ -21,7 +16,7 @@ export default withRouteData((props) => (
       <br />
       <div>
         <Layout.Content className='maxWidthContainer'>
-          <Section id='first-steps'>
+          <section id='first-steps'>
             <h1>First steps</h1>
             <h2>Installation</h2>
             <p>In order for you to have Wizardo CLI available in your computer, you need to have node installed in your system in a version equal or greater than v6.0.0. To install node here is the <a href="https://nodejs.org/en/download/" target="_blank">link</a>.<br />
@@ -82,9 +77,9 @@ export default withRouteData((props) => (
     Most of file explorers offer the option to <InlineCode>Show Hidden Files</InlineCode> when you <InlineCode>rightClick</InlineCode> in the root of your project and you can do it the same way with your text editor. <br />
     In the terminal, you might run <InlineCode>$ ls -a</InlineCode> to show all, even hidden files, available in the current path.
   </p>
-</Section>
+</section>
 
-<Section id='generators'>
+<section id='generators'>
   <h1>Generators</h1>
   <p>In this section we are going to go through different aspects of a generator using a simple example. We will create a plain html based website using Wizardo.</p>
   <h2>1. Setup</h2>
@@ -152,9 +147,9 @@ export default withRouteData((props) => (
             {` ~/website$ wizardo ls
     - page_generator `}
   </Highlight>
-</Section>
+</section>
 
-<Section id='templates'>
+<section id='templates'>
   <h1>Templates</h1>
   <p>Templates in Wizardo are the way of creating new files in your project, based on existing ones. In this section, we will go on with our tutorial by creating a template and reviewing the related parts</p>
   <h2>1. Templates folder </h2>
@@ -224,9 +219,9 @@ export default withRouteData((props) => (
   └ index.html `}
 </Highlight>
   <p>Cool! Now that we learned how to generate files given a template, in the following section we will learn how to add some dynamism to our templates so we can generate files with names other than <InlineCode>index.html</InlineCode> 👍 </p>
-  </Section>
+  </section>
 
-<Section id='variables'>
+<section id='variables'>
   <h1>Variables</h1>
   <p>Variables are words that follow a special pattern that will be replaced with a given input at run time.</p>
   <h2>1. Variables types</h2>
@@ -357,18 +352,118 @@ export default withRouteData((props) => (
 }`}
   </Highlight>
   <p>This workaround tells wizardo to ask for these variables and to use the values given at runtime.</p>
-</Section>
+</section>
 
-<Section id='modifiers'>
+<section id='modifiers'>
   <h1>Modifiers</h1>
-  <h2>Modifiers introduction</h2>
-  <h2>Modifiers structure in config file</h2>
-  <h2> - regex</h2>
-  <h2> - text to insert</h2>
-  <h2>Variables inside modifiers</h2>
-  <h2>disclosure about modifying recently created files</h2>
-</Section>
+  <p>Modifiers are the way of looking for a pattern in existing files and adding new content to them.<br />
+    They work with <InlineCode>Regular Expressions</InlineCode> so if you are unfamiliar with those, we recommend you to go take a look at them in <a href="https://regexone.com/" target="_blank">regexone.com</a> or the resource of your choice.
+  </p>
+  <h2>1. Modifiers structure</h2>
+  <p>The content of <InlineCode>modifiers</InlineCode> key in the configuration file is made of an <InlineCode>array</InlineCode> of <InlineCode>path_to_file</InlineCode>, <InlineCode>regex</InlineCode> and <InlineCode>text_to_insert</InlineCode>.</p>
+  <p> - <InlineCode>path_to_file</InlineCode> indicates the path from the root of the project to the file that the modifier is goint to work on.<br />
+     - <InlineCode>regex</InlineCode> is the regular expression that will be found in the the given file and will be used to insert after it. A way of validation the patterns created is to use <a href="https://regex101.com" target="_blank">regex101.com</a> in <InlineCode>javascript</InlineCode> mode.<br />
+     - <InlineCode>text_to_insert</InlineCode> is what is going to be inserted after the match in the regex.<br />
+</p>
+<p><strong>Note</strong> that at the moment, <InlineCode>modifiers</InlineCode> don't respect identation, so <InlineCode>text_to_insert</InlineCode> needs take that into consideration.</p>
+  <h2>2. Use modifiers</h2>
+  <p>Following with the tutorial, lets create a navbar into the <InlineCode>index.html</InlineCode> of root, so whenever we add a new page with the <InlineCode>page_generator</InlineCode>, the modifier adds the corresponding route to the navbar.</p>
+  <p>First, modify <InlineCode>index.html</InlineCode> to match the following code. We are basically adding a navbar with routes to each of the files we have created so far.</p>
 
+  <Highlight className="html" >
+{`
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <title>index</title>
+   <style>
+     body { padding: 0; margin: 0; }
+     nav { background: #efefef; padding: 15px 50px; }
+     nav a { color: black; padding: 10px 15px; }
+   </style>
+ </head>
+ <body>
+   <nav>
+      <a href="pages/about_us.html"> AboutUs </a>
+      <a href="pages/index.html">    Index   </a>
+      <a href="pages/products.html"> Products</a>
+    </nav>
+  My website
+  </body>
+  </html>`}
+  </Highlight>
+  <p>
+    Our <InlineCode>modifier</InlineCode> is going to insert an anchor for the new page right after the <InlineCode>{`<nav>`}</InlineCode> tag.<br />
+      Modify the <InlineCode>page_generator.config.json</InlineCode> file to include the following modifier:
+  </p>
+  <div style={{fontSize: '0.9em'}}>
+    <Highlight className="json">
+      {`{
+  "generator": "page_generator",
+  "templates": [
+    {
+      "source_template": "___page_name___.html",
+      "destination": "pages"
+    }
+  ],
+  "modifiers": [
+     {
+       "path_to_file": "index.html",
+       "regex": "<nav>\\n",
+       "text_to_insert": "     <a href=\\"pages/<%=page_name=%>.html\\">___PageName___</a>\\n"
+     }
+  ]
+}`}
+  </Highlight>
+  </div>
+  <p>We are going to work in the <InlineCode>"index.html"</InlineCode> file of root using <InlineCode>path_to_file</InlineCode></p>
+  <p>We are matching <InlineCode>{`"<nav>\\n"`}</InlineCode> using <InlineCode>regex</InlineCode>.</p>
+  <p>And we are inserting the new anchor right after the match using <InlineCode>text_to_insert</InlineCode>.</p>
+  <p><strong>Note</strong> that we are using variables in <InlineCode>text_to_insert</InlineCode> key. You can also use variables inside the <InlineCode>regex</InlineCode> and <InlineCode>path_to_file</InlineCode> keys.</p>
+  <h2>3. Execute the modifier</h2>
+  <p>To test the modifier we just need to run our <InlineCode>page_generator</InlineCode>.</p>
+
+  <Highlight className="bash">
+    {` ~/website$ wizardo run page_generator
+Wizardo: run page_generator
+
+  Enter the value for the following variables in your config file
+    page_name: faqs
+Wizardo: run page_generator - DONE!
+  create: pages/faqs.html
+  modify: index.html `}
+  </Highlight>
+  <p>As the last line of the response states, <InlineCode>index.html</InlineCode> was modified and now it contains an anchor to the recently created <InlineCode>faqs.html</InlineCode> page.</p>
+  <p>The index now looks like:</p>
+  <Highlight className="html" >
+    {`
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <title>index</title>
+   <style>
+     body { padding: 0; margin: 0; }
+     nav { background: #efefef; padding: 15px 50px; }
+     nav a { color: black; padding: 10px 15px; }
+   </style>
+ </head>
+ <body>
+   <nav>
+      <a href="pages/faqs.html">Faqs</a>
+      <a href="pages/about_us.html"> AboutUs </a>
+      <a href="pages/index.html">    Index   </a>
+      <a href="pages/products.html"> Products</a>
+    </nav>
+  My website
+  </body>
+  </html>`}
+</Highlight>
+  <h2>4. Don't modify files that you just created</h2>
+  <p>Wizardo is currently built with the async file system api of node. So if you try writing to the same file in the <InlineCode>modifiers</InlineCode> and the <InlineCode>templates</InlineCode>, you could come across a couple WTFs.</p>
+  <p>If you need to do something like that, you can always create a new generator that leaves the templates empty, <InlineCode>"templates": []</InlineCode>, and run it manually after the one that create files with templates.</p>
+</section>
       </Layout.Content>
     </div>
   </Layout>
