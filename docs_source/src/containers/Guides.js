@@ -278,7 +278,7 @@ export default withRouteData((props) => (
    ├ .wizardo/
    │ ├─ page_generator.config.json
    │ └─ templates/
-   │    └─ index.html
+   │    └─ ___page_name___.html
    ├ pages/
    │ ├─ products.html
    │ └─ index.html
