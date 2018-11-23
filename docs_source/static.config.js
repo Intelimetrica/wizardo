@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 export default {
+  basePath: 'wizardo',
   getSiteData: () => ({
     title: 'Wizardo',
   }),
