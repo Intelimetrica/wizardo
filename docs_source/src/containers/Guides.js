@@ -224,14 +224,14 @@ export default withRouteData((props) => (
 <section id='variables'>
   <h1>Variables</h1>
   <p>Variables are words that follow a special pattern that will be replaced with a given input at run time.</p>
-  <h2>1. Variables types</h2>
+  <h2 id='variables-types'>1. Variables types</h2>
   <p>Wizardo has three types of identifiers for variables: <br/>
     <InlineCode>___var_name___</InlineCode>, which is the most common used. It is given by three underscores followed by the variable name in snake_case and ending with other three underscores.<br />
     <InlineCode>___VarName___</InlineCode>, which is used similar to the previous one but uses PascalCase. This allow to use the same variables but print them in the generated files using PascalCase.<br />
     <InlineCode>{"<%=var_name=%>"}</InlineCode>, composed with <InlineCode>{"<%="}</InlineCode> followed by the variable name in <InlineCode>snake_case</InlineCode> and ending with <InlineCode>{"=%>"}</InlineCode>. This option is available to be used in the same line as one of the previous types.<br />
     We will see an example each of the previous variable types in the following steps of this section
 </p>
-  <h2>2. Variables in config file</h2>
+  <h2 id='variables-in-config'>2. Variables in config file</h2>
   <p>Wizardo takes variables found in the config file and prompt for their values, so at run time they are replaced with their corresponding values.</p>
   <p>It makes sense in our example that generate pages with other names, such as <InlineCode>about</InlineCode>, <InlineCode>products</InlineCode> or <InlineCode>FAQ</InlineCode>.</p>
   <p>So lets modify the <InlineCode>page_generator.config.json</InlineCode> file to allow dynamic page names</p>
@@ -254,7 +254,7 @@ export default withRouteData((props) => (
     {" ~/website$ mv .wizardo/templates/index.html .wizardo/templates/___page_name___.html"}
   </Highlight>
 
-  <h2>3. Run the generator</h2>
+  <h2 id='variables-run-generator'>3. Run the generator</h2>
   <p>Let see how wizardo prompts for <InlineCode>page_name</InlineCode> variables. Remember that in order to run a Wizardo generator, you need to have all the changes commited first.</p>
   <Highlight className="bash">
     {` ~/website$ git add .
@@ -285,7 +285,7 @@ export default withRouteData((props) => (
    └ index.html `}
 </Highlight>
 
-  <h2>4. Variables in templates</h2>
+  <h2 id='variables-in-templates'>4. Variables in templates</h2>
   <p>You can also add variables inside templates, so everytime you generate a new view based on a template, it is not just a copy, but a customized new file.</p>
   <p>To demonstrate this, go to <InlineCode>___page_name___.html</InlineCode> and modify the content with the following:</p>
   <Highlight className='html'>
@@ -328,7 +328,7 @@ export default withRouteData((props) => (
    </body>
  </html> `}
   </Highlight>
-  <h2>5. Limitations and workaround</h2>
+  <h2 id='variables-limitations'>5. Limitations and workaround</h2>
   <p>
     At the moment wizardo look for variables only in the config file, if the variable to be replaced exists in a template but not in the generator's config file, wizardo won't prompt for that variable and you will probably end up with an un-replaced variable in the final file. <br />
     <strong>This is a limitation</strong> that the team has in mind and we are planning to improve it in future releases.
@@ -359,14 +359,14 @@ export default withRouteData((props) => (
   <p>Modifiers are the way of looking for a pattern in existing files and adding new content to them.<br />
     They work with <InlineCode>Regular Expressions</InlineCode> so if you are unfamiliar with those, we recommend you to go take a look at them in <a href="https://regexone.com/" target="_blank">regexone.com</a> or the resource of your choice.
   </p>
-  <h2>1. Modifiers structure</h2>
+  <h2 id='modifiers-structure'>1. Modifiers structure</h2>
   <p>The content of <InlineCode>modifiers</InlineCode> key in the configuration file is made of an <InlineCode>array</InlineCode> of <InlineCode>path_to_file</InlineCode>, <InlineCode>regex</InlineCode> and <InlineCode>text_to_insert</InlineCode>.</p>
   <p> - <InlineCode>path_to_file</InlineCode> indicates the path from the root of the project to the file that the modifier is goint to work on.<br />
      - <InlineCode>regex</InlineCode> is the regular expression that will be found in the the given file and will be used to insert after it. A way of validation the patterns created is to use <a href="https://regex101.com" target="_blank">regex101.com</a> in <InlineCode>javascript</InlineCode> mode.<br />
      - <InlineCode>text_to_insert</InlineCode> is what is going to be inserted after the match in the regex.<br />
 </p>
 <p><strong>Note</strong> that at the moment, <InlineCode>modifiers</InlineCode> don't respect identation, so <InlineCode>text_to_insert</InlineCode> needs take that into consideration.</p>
-  <h2>2. Use modifiers</h2>
+  <h2 id='modifiers-use'>2. Use modifiers</h2>
   <p>Following with the tutorial, lets create a navbar into the <InlineCode>index.html</InlineCode> of root, so whenever we add a new page with the <InlineCode>page_generator</InlineCode>, the modifier adds the corresponding route to the navbar.</p>
   <p>First, modify <InlineCode>index.html</InlineCode> to match the following code. We are basically adding a navbar with routes to each of the files we have created so far.</p>
 
@@ -421,7 +421,7 @@ export default withRouteData((props) => (
   <p>We are matching <InlineCode>{`"<nav>\\n"`}</InlineCode> using <InlineCode>regex</InlineCode>.</p>
   <p>And we are inserting the new anchor right after the match using <InlineCode>text_to_insert</InlineCode>.</p>
   <p><strong>Note</strong> that we are using variables in <InlineCode>text_to_insert</InlineCode> key. You can also use variables inside the <InlineCode>regex</InlineCode> and <InlineCode>path_to_file</InlineCode> keys.</p>
-  <h2>3. Execute the modifier</h2>
+  <h2 id='modifiers-execute'>3. Execute the modifier</h2>
   <p>To test the modifier we just need to run our <InlineCode>page_generator</InlineCode>.</p>
 
   <Highlight className="bash">
@@ -460,7 +460,7 @@ Wizardo: run page_generator - DONE!
   </body>
   </html>`}
 </Highlight>
-  <h2>4. Don't modify files that you just created</h2>
+  <h2 id='modifiers-warning'>4. Don't modify files that you just created</h2>
   <p>Wizardo is currently built with the async file system api of node. So if you try writing to the same file in the <InlineCode>modifiers</InlineCode> and the <InlineCode>templates</InlineCode>, you could come across a couple WTFs.</p>
   <p>If you need to do something like that, you can always create a new generator that leaves the templates empty, <InlineCode>"templates": []</InlineCode>, and run it manually after the one that create files with templates.</p>
 </section>
