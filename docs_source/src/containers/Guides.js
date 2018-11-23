@@ -68,8 +68,7 @@ export default withRouteData((props) => (
   <p>
     Yes.<br />
     Specially if you want your generators to be available to other developers in your project.<br />
-    Actually Wizardo works tighly coupled with git and you cannot run a generator without have it commited in your repo.<br />
-    For more info on this, you can go to <Link to="/guides#run-the-generator"><em>Run the generator</em></Link> section.
+    Actually Wizardo works tighly coupled with git and you cannot run a generator without have it commited in your repo.
   </p>
   <h3 id='first-steps-cant-find-wizardo'>I can't find .wizardo folder in my file explorer</h3>
   <p>
@@ -361,7 +360,7 @@ export default withRouteData((props) => (
   </p>
   <h2 id='modifiers-structure'>1. Modifiers structure</h2>
   <p>The content of <InlineCode>modifiers</InlineCode> key in the configuration file is made of an <InlineCode>array</InlineCode> of <InlineCode>path_to_file</InlineCode>, <InlineCode>regex</InlineCode> and <InlineCode>text_to_insert</InlineCode>.</p>
-  <p> - <InlineCode>path_to_file</InlineCode> indicates the path from the root of the project to the file that the modifier is goint to work on.<br />
+  <p> - <InlineCode>path_to_file</InlineCode> indicates the path from the root of the project to the file that the modifier is going to work on.<br />
      - <InlineCode>regex</InlineCode> is the regular expression that will be found in the the given file and will be used to insert after it. A way of validation the patterns created is to use <a href="https://regex101.com" target="_blank">regex101.com</a> in <InlineCode>javascript</InlineCode> mode.<br />
      - <InlineCode>text_to_insert</InlineCode> is what is going to be inserted after the match in the regex.<br />
 </p>

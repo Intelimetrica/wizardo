@@ -32,7 +32,8 @@ const App = () => (
           </Router>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Wizardo ©2018 Created by Intelimétrica
+
+          {`Wizardo ©${(new Date).getFullYear} Created by Intelimétrica`}
         </Footer>
       </Layout>
     </Layout>
