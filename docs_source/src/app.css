@@ -88,6 +88,8 @@ span code {
   font-size: 2.5em;
   line-height: 2em;
 }
+/*.ant-menu-item { margin-left: 65px !important; }*/
+.ant-menu-item-group-list .ant-menu-item a { padding-left: 20px; }
 
 .what-is-it .explanation{
 

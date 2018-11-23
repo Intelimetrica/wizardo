@@ -18,7 +18,7 @@ export default withRouteData((props) => (
         <Layout.Content className='maxWidthContainer'>
           <section id='first-steps'>
             <h1>First steps</h1>
-            <h2>Installation</h2>
+            <h2 id='first-steps-installation'>Installation</h2>
             <p>In order for you to have Wizardo CLI available in your computer, you need to have node installed in your system in a version equal or greater than v6.0.0. To install node here is the <a href="https://nodejs.org/en/download/" target="_blank">link</a>.<br />
               You can install Wizardo through npm as following:</p>
             <Highlight className='bash'>
@@ -41,7 +41,7 @@ export default withRouteData((props) => (
      list|ls             list all available generators
      *                   not a command`}
    </Highlight>
-   <h2>Wizardo init</h2>
+   <h2 id='first-steps-init'>Wizardo init</h2>
    <p>
      Wizardo is intended to be used for particular projects. So you might want configure it in different ways according to your needs. <br />
      For that reason, Wizardo offers a command that adds a folder called <InlineCode>.wizardo</InlineCode> in the root of your project in which you can dump all the configuration needed.<br />
@@ -64,14 +64,14 @@ export default withRouteData((props) => (
   The content of a <InlineCode>.wizardo</InlineCode> folder is made out of two parts: <Link to="/guides#generators"><em>generators config files</em></Link> and <Link to="/guides#templates"><em>templates</em></Link>.
   Later in this guide, we will go in depth on each of the previous topics. But as a highlevel explanation, <InlineCode>{'<generators>.config.json'}</InlineCode> files, describe the steps your generators will execute and <InlineCode>templates</InlineCode> folder contain all the templates used by the config files.
   </p>
-  <h3>Should I commit this folder in git?</h3>
+  <h3 id='first-steps-about-git'>Should I commit this folder in git?</h3>
   <p>
     Yes.<br />
     Specially if you want your generators to be available to other developers in your project.<br />
     Actually Wizardo works tighly coupled with git and you cannot run a generator without have it commited in your repo.<br />
     For more info on this, you can go to <Link to="/guides#run-the-generator"><em>Run the generator</em></Link> section.
   </p>
-  <h3>I can't find .wizardo folder in my file explorer</h3>
+  <h3 id='first-steps-cant-find-wizardo'>I can't find .wizardo folder in my file explorer</h3>
   <p>
     Most of file explorers hide folders and files starting with <InlineCode>.</InlineCode> and that is the reason why we create wizardo's configuration folder starting with dot. The root of your project shouldn't be contaminated with configuration files. Anyways, you might want to use the folder.<br />
     Most of file explorers offer the option to <InlineCode>Show Hidden Files</InlineCode> when you <InlineCode>rightClick</InlineCode> in the root of your project and you can do it the same way with your text editor. <br />
@@ -82,7 +82,7 @@ export default withRouteData((props) => (
 <section id='generators'>
   <h1>Generators</h1>
   <p>In this section we are going to go through different aspects of a generator using a simple example. We will create a plain html based website using Wizardo.</p>
-  <h2>1. Setup</h2>
+  <h2 id='generators-setup'>1. Setup</h2>
   <p>To start with this example, create a folder <InlineCode>website/</InlineCode> to hold our project. <InlineCode>cd</InlineCode> into our folder and execute <InlineCode>$ wizardo init</InlineCode></p>
 
   <Highlight className='bash'>
@@ -111,7 +111,7 @@ export default withRouteData((props) => (
  </html> `}
           </Highlight>
 
-          <h2>2. Create command</h2>
+          <h2 id='generators-create-command'>2. Create command</h2>
           <p>Now we will execute the <InlineCode>create</InlineCode> command that will add into our <InlineCode>.wizardo</InlineCode> folder a config file for our new generator.</p>
           <p>Lets say that we want a generator to create new pages into our website. So lets run the command by:</p>
           <Highlight className='bash'>
@@ -140,7 +140,7 @@ export default withRouteData((props) => (
           </Highlight>
           <p>The config file contain 3 main sections, that are <InlineCode>generator</InlineCode> with the name of our generator, <InlineCode>templates</InlineCode> and <InlineCode>modifiers</InlineCode> that we are going to discuss in the following sections <Link to="/guides#templates"><em>templates</em></Link> and <Link to="/guides#modifiers"><em>modifiers</em></Link>.</p>
 
-          <h2>3. List command</h2>
+          <h2 id='generators-list-command'>3. List command</h2>
           <p>The existance of <InlineCode>page_generator.config.json</InlineCode> file, tells Wizardo that we have a generator under the name <InlineCode>page_generator</InlineCode>.</p>
           <p>To verify so, we can run the <InlineCode>list</InlineCode> command to list all the available generators in our project.</p>
           <Highlight className='bash'>
@@ -152,7 +152,7 @@ export default withRouteData((props) => (
 <section id='templates'>
   <h1>Templates</h1>
   <p>Templates in Wizardo are the way of creating new files in your project, based on existing ones. In this section, we will go on with our tutorial by creating a template and reviewing the related parts</p>
-  <h2>1. Templates folder </h2>
+  <h2 id='templates-folder'>1. Templates folder </h2>
   <p><InlineCode>.wizardo/</InlineCode> folder has a folder called <InlineCode>templates/</InlineCode> in which we need to place our templates.<br />
     This is the place where Wizardo looks for templates. So lets go and copy our <InlineCode>index.html</InlineCode> into that location by:
   </p>
@@ -162,7 +162,7 @@ export default withRouteData((props) => (
    index.html `}
  </Highlight>
 
- <h2>2. Templates structure in config file</h2>
+ <h2 id='templates-structure-in-config'>2. Templates structure in config file</h2>
  <p>Great, now that we have a template in <InlineCode>.wizardo/templates/</InlineCode> we need to let know our generator (<InlineCode>page_generator.config.json</InlineCode>) that whenever it runs, we are going to create a new file based on our template </p>
  <p>The content of <InlineCode>templates</InlineCode> key of the configuration file for a generator is really simple. It contains an array of sources and destinations. The <InlineCode>source_template</InlineCode> key indicates the name of our template inside the <InlineCode>templates/</InlineCode> folder, and the <InlineCode>destination</InlineCode> key, is the path in which is going to reside the file that wizardo will generate.</p>
  <p>Lets say that in our website we will have folder <InlineCode>pages/</InlineCode> to hold all of our pages. So lets go and modify <InlineCode>page_generator.config.json</InlineCode> to indicate our intention:</p>
@@ -180,7 +180,7 @@ export default withRouteData((props) => (
           </Highlight>
           <p><strong>Note</strong> that we removed the content of <InlineCode>modifiers</InlineCode> key. <Link to="/guides#modifiers"><em>Later</em></Link> on this guide we will go on to this part, but for now, just the array empty so we can see wizardo in action.</p>
 
-          <h2>3. Run generator to test templates</h2>
+          <h2 id='templates-run-generator'>3. Run generator to test templates</h2>
           <p>To run the <InlineCode>page_generator</InlineCode> execute:</p>
           <Highlight className='bash'>
             {
