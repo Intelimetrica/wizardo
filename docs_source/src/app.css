@@ -174,7 +174,6 @@ span code {
       Sider
    =========== */
 .sider {
-  width: 250px;
   height: 100%;
   overflow-y: scroll;
   position: fixed;

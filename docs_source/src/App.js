@@ -37,6 +37,7 @@ class App extends Component {
           />
 
           <Sider
+            width={250}
             className={classNames({
               sider: this.state.isMenuHide,
               "js-sider": !this.state.isMenuHide
