@@ -18,7 +18,7 @@ import '../node_modules/highlight.js/styles/atom-one-dark.css';
 const App = () => (
   <Router>
     <Layout>
-      <Sider style={{  height: '100vh', position: 'fixed', left: 0 }} width={250}>
+      <Sider style={{  height: '100%', overflowY:'scroll', position: 'fixed', left: 0 }} width={250}>
         <Link to='/'><img className='logo' src={logo_horizontal} alt="logo" /></Link>
         <Navbar />
       </Sider>
