@@ -10,7 +10,5 @@ package-lock.json
 /docs/*
 /source/*
 
-/docs_source/*
-!docs_source/src/App.js
 
 distribution
