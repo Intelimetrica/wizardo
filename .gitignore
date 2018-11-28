@@ -1,6 +1,16 @@
 *.swp
 *.swo
 *.tgz
+*md
+LICENSE
+
+package-lock.json
 
 /node_modules/
+/docs/*
+/source/*
+
+/docs_source/*
+!docs_source/src/App.js
+
 distribution
