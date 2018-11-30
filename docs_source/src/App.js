@@ -5,7 +5,6 @@ import { hot } from "react-hot-loader";
 import { Layout } from "antd";
 const { Sider, Content, Footer } = Layout;
 
-import classNames from "classnames";
 //;
 import Navbar from "./components/Navbar";
 import MenuIcon from "./components/MenuIcon";
@@ -28,6 +27,8 @@ class App extends Component {
   };
 
   render() {
+    const isMenuHide = this.state.isMenuHide;
+
     return (
       <Router>
         <Layout>
@@ -38,10 +39,7 @@ class App extends Component {
 
           <Sider
             width={250}
-            className={classNames({
-              sider: this.state.isMenuHide,
-              "js-sider": !this.state.isMenuHide
-            })}
+            className={`${isMenuHide && "sider"} ${!isMenuHide && "js-sider"}`}
           >
             <Link to="/">
               <img className="logo" src={logo_horizontal} alt="logo" />

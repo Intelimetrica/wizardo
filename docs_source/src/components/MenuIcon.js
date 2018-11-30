@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import classNames from "classnames";
 
 class MenuIcon extends Component {
   render() {
@@ -7,21 +6,9 @@ class MenuIcon extends Component {
 
     return (
       <section id="menu-icon" onClick={onClick}>
-        <div
-          className={classNames("line", {
-            "js-rotate-1": !isMenuHide
-          })}
-        />
-        <div
-          className={classNames("line", {
-            "js-opacity": !isMenuHide
-          })}
-        />
-        <div
-          className={classNames("line", {
-            "js-rotate-2": !isMenuHide
-          })}
-        />
+        <div className={`line ${!isMenuHide && "js-rotate-1"}`} />
+        <div className={`line ${!isMenuHide && "js-opacity"}`} />
+        <div className={`line ${!isMenuHide && "js-rotate-2"}`} />
       </section>
     );
   }
