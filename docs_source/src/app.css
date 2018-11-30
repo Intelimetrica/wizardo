@@ -1,22 +1,56 @@
 body {
-  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
-    'Lucida Grande', sans-serif;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 300;
   font-size: 16px;
   margin: 0;
   padding: 0;
 }
 
-pre { font-family: monospace; border-radius: 5px; font-size: 0.8em}
-h1, h2, h3, h4, h5, h6 { color: #444; }
-img { max-width: 100%; }
-strong { font-weight: 700; }
-section { padding: 50px; font-size: 1.2em; line-height: 1.7; }
-section p { margin: 20px 60px 0 30px }
-section h1 { font-weight: 700; font-size: 2em }
-section h2 { font-weight: 700; font-size: 1.2em; margin: 15px}
-section h3 { font-weight: 700; font-size: 1.1em; margin: 30px 0 0 30px}
-section pre { margin: 30px }
+pre {
+  font-family: monospace;
+  border-radius: 5px;
+  font-size: 0.8em;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #444;
+}
+img {
+  max-width: 100%;
+}
+strong {
+  font-weight: 700;
+}
+section {
+  padding: 50px;
+  font-size: 1.2em;
+  line-height: 1.7;
+}
+section p {
+  margin: 20px 60px 0 30px;
+}
+section h1 {
+  font-weight: 700;
+  font-size: 2em;
+}
+section h2 {
+  font-weight: 700;
+  font-size: 1.2em;
+  margin: 15px;
+}
+section h3 {
+  font-weight: 700;
+  font-size: 1.1em;
+  margin: 30px 0 0 30px;
+}
+section pre {
+  margin: 30px;
+}
 span code {
   border: 1px solid #dedede;
   border-radius: 5px;
@@ -30,7 +64,9 @@ span code {
   margin: 0 auto;
 }
 
-.content { padding: 1rem; }
+.content {
+  padding: 1rem;
+}
 
 .logo {
   padding: 16px;
@@ -44,9 +80,9 @@ span code {
   padding: 40px;
   position: relative;
   text-align: center;
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .installation {
@@ -60,7 +96,7 @@ span code {
 .installation .anticon {
   font-size: 100px;
 }
-.installation .code-snippet{
+.installation .code-snippet {
   width: 100%;
   padding: 25px;
   background: #f0f2f4;
@@ -68,9 +104,9 @@ span code {
   justify-content: flex-start;
   /* shadow */
   max-width: 1000px;
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 .installation pre {
   font-family: monospace;
@@ -89,16 +125,94 @@ span code {
   line-height: 2em;
 }
 /*.ant-menu-item { margin-left: 65px !important; }*/
-.ant-menu-item-group-list .ant-menu-item a { padding-left: 20px; }
+.ant-menu-item-group-list .ant-menu-item a {
+  padding-left: 20px;
+}
 
-.what-is-it .explanation{
+.what-is-it .explanation {
+}
 
+/* ==============
+      Menu Icon
+   ============= */
+
+#menu-icon {
+  display: none;
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  width: 35px;
+  padding: 0;
+  cursor: pointer;
+  z-index: 100;
+}
+
+#menu-icon .line {
+  width: 35px;
+  height: 4px;
+  margin: 6.5px 0;
+  background: darkblue;
+  border-radius: 1.5px;
+  opacity: 1;
+  transition-duration: 0.7s;
+  transition-timing-function: ease-in-out;
+  transition-property: opacity, transform;
+}
+
+#menu-icon .js-rotate-1 {
+  transform: rotate(-45deg) translate(-7.3px, 6.5px);
+}
+
+#menu-icon .js-rotate-2 {
+  transform: rotate(45deg) translate(-7.3px, -6.5px);
+}
+
+#menu-icon .js-opacity {
+  opacity: 0;
+}
+
+/* ============
+      Sider
+  ============ */
+.sider {
+  height: 100%;
+  overflow-y: scroll;
+  position: fixed;
+  left: 0;
+  transition: left ease-in-out 0.7s;
+  z-index: 99;
+}
+
+.layout {
+  margin-left: 250px;
+  transition: margin ease-in-out 0.7s;
 }
 
 @media (max-width: 885px) {
+  .sider {
+    left: -100%;
+  }
+
+  .js-sider {
+    left: 0;
+  }
+
+  .js-sider-left {
+    left: 0;
+  }
+
+  .layout {
+    margin-left: 0;
+  }
+
+  #menu-icon {
+    display: block;
+  }
+
   .installation i {
     display: none;
   }
-  .installation pre { margin-left: 10px }
+  .installation pre {
+    margin-left: 10px;
+  }
 }
-
