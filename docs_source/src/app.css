@@ -182,20 +182,6 @@ span code {
   transition: left ease-in-out 0.7s;
   z-index: 99;
 }
-.sider::-webkit-scrollbar {
-  width: 8px;
-  background-color: #FFFFFF;
-}
-
-.sider::-webkit-scrollbar-track {
-  border-radius: 8px;
-  background-color: #D1D1D1;
-}
-
-.sider::-webkit-scrollbar-thumb {
-  border-radius: 8px;
-  background-color: #6d6e71;
-}
 
 .layout {
   margin-left: 250px;
@@ -230,4 +216,3 @@ span code {
     margin-left: 10px;
   }
 }
-
