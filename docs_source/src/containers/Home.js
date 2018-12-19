@@ -28,7 +28,7 @@ const WhatIsIt = props => (
       <Col md={8} sm={20}>
         <div className='explanation'>
           <h1>What is Wizardo?</h1>
-          <p>Wizardo is tool that allows you to create code generators to bootstrap new projects or new features in existing ones.</p>
+          <p>Wizardo is a tool that allows you to create code generators to bootstrap new projects or new features in existing ones.</p>
           <p>With Wizardo generators, you can also modify existing files to insert snippets of code whenever is needed.</p>
           <p>It uses templates to generate new files and a configuration file to execute all the steps required to run a scaffold. Its variables based CLI adds dynamism to generators.</p>
           <p>Go to <Link to='/guides'><Button type='default' size='small'>Guides <Icon type='right'/></Button></Link> to start building your first Wizardo Generator.</p>
