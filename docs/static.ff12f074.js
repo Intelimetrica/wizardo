@@ -3200,7 +3200,7 @@ var App = function (_React$Component) {
               _react2.default.createElement(
                 _reactStatic.Link,
                 { to: '/guides#generators-create-command' },
-                'Wizardo Init'
+                'Create command'
               ),
               ' '
             ),
@@ -3211,7 +3211,7 @@ var App = function (_React$Component) {
               _react2.default.createElement(
                 _reactStatic.Link,
                 { to: '/guides#generators-list-command' },
-                'About Git & Wizardo'
+                'List command'
               ),
               ' '
             )
