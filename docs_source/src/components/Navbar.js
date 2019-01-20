@@ -23,8 +23,8 @@ class App extends React.Component {
             </SubMenu>
             <SubMenu key='g2' title={<Link to='/guides#generators'>Create a generator</Link>} >
               <Item key='gg21'> <Link to='/guides#generators-setup'>Setup</Link> </Item>
-              <Item key='gg22'> <Link to='/guides#generators-create-command'>Wizardo Init</Link> </Item>
-              <Item key='gg23'> <Link to='/guides#generators-list-command'>About Git & Wizardo</Link> </Item>
+              <Item key='gg22'> <Link to='/guides#generators-create-command'>Create command</Link> </Item>
+              <Item key='gg23'> <Link to='/guides#generators-list-command'>List command</Link> </Item>
             </SubMenu>
             <SubMenu key='g3' title={<Link to='/guides#templates'>Templates</Link>} >
               <Item key='gg31'> <Link to='/guides#templates-folder'>Templates Folder</Link> </Item>
